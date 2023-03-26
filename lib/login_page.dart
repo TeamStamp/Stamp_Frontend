@@ -58,7 +58,7 @@ class _loginpageState extends State<loginpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(height: MediaQuery.of(context).size.height*0.5,'assets/logo_main.png'),
+              Image.asset(height: MediaQuery.of(context).size.height*0.5,'images/logo_main.png'),
               Container(
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15
                     ,right:  MediaQuery.of(context).size.width*0.15),
