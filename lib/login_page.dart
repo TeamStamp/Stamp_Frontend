@@ -6,6 +6,8 @@
   - validateAndSave 기능 잘 몰라서 로그인 버튼 눌렀을 때 onPressed() 안에서 validateAndSave 실행 되는거 일단 지우고
     intent로 다음 페이지 넘기기 해놨거든? 나중에 수정할 때 잘 만져서 validateAndSave도 다시 추가해줘 @김민
   - 로고 .png파일 추가 했는데도 깨지는데 손 좀 봐줘 @김민
+ 23.03.26
+  - 영훈이가 만들어 놓은 images 파일이랑 민이가 만들어 놓은 assets 파일 달라서 그거 하나 수정했음
 
 */
 
