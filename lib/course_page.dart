@@ -42,10 +42,42 @@ class _coursepageState extends State<coursepage> {
       ),
       body: Column(
         children: [
-          Flexible(child: Container(color: Colors.red,), flex: 1,),
-          Flexible(child: Container(color: Colors.orange,), flex: 6,),
-          Flexible(child: Container(color: Colors.green,), flex: 7,),
-          Flexible(child: Container(color: Colors.blue,), flex: 6,)
+          Flexible(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.red,
+                child: Text('카카오지하철 느낌의 이미지 넣는 구역'),
+              ),
+              flex: 2,
+          ),
+          Flexible(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.orange,
+                child: Text('선택한 코스를 이루는 장소들 사진 나열하는 구역'),
+              ),
+              flex: 5
+          ),
+          Flexible(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.green,
+                child: Text('각 장소별 상세 설명'),
+              ),
+              flex: 7
+          ),
+          Flexible(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.blue,
+                child: Text('댓글 리스트 형식으로 넣는 구역'),
+              ),
+              flex: 6
+          )
         ],
       ),
     );
