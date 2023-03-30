@@ -18,10 +18,9 @@ class stamppage extends StatelessWidget {
       backgroundColor: Colors.black26,
       body: Center(
           child: ElevatedButton(
-            child: Text('버튼'),
-            onPressed: (){},
-          )
-      ),
+        child: Text('버튼'),
+        onPressed: () {},
+      )),
     );
   }
 }
