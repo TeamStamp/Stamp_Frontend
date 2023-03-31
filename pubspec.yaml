@@ -56,6 +56,7 @@ flutter:
     - images/logo_appbar.png
     - images/logo_main.png
     - images/user_icon.png
+    - images/course_page.image01.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
