@@ -6,8 +6,7 @@
 
 23.04.02
   - 코스 눌렀을 때 코스 이미지랑 세부 코스 내용 팝업창 뜨게 해놨음.
-  - 피그마에 짠것처럼 하려면 그리드뷰 써야한다는데 자꾸 오류나서 더 찾아보고 깃에 추가할게
-  - 이미지 파일 오류나서 안뜨긴 하는데 실행 문제는 없어서 일단 올림. 해결중... @의정
+  - 피그마에 짠것처럼 하려면 그리드뷰 써야한다는데 자꾸 오류나서 더 찾아보고 깃에 추가할게 @의정
 */
 
 import 'package:flutter/material.dart';
@@ -42,12 +41,12 @@ class _ListViewPageState extends State<ListViewPage> {
   ];
 
   var imageList = [
-    'images/place1',
-    'images/place2',
-    'images/place3',
-    'images/place4',
-    'images/place5',
-    'images/place6'
+    'images/place1.jpg',
+    'images/place2.jpg',
+    'images/place3.jpg',
+    'images/place4.jpg',
+    'images/place5.jpg',
+    'images/place6.png'
   ];
 
   var description = [
