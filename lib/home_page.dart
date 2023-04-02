@@ -72,14 +72,17 @@ class _ListViewPageState extends State<ListViewPage> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    image,
-                    width: 200,
-                    height: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Image.asset(
+                      image,
+                      width: 150,
+                      height: 150,
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 Text(
                   title,
@@ -95,7 +98,7 @@ class _ListViewPageState extends State<ListViewPage> {
                     maxLines: 3,
                     style: TextStyle(
                       fontSize: 15,
-                      color: Color(0xffC5C2B3),
+                      color: Colors.black54,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -114,6 +117,7 @@ class _ListViewPageState extends State<ListViewPage> {
         body: Column(
           children: [
             Flexible(
+                flex: 1,
                 child: Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height,
@@ -143,7 +147,7 @@ class _ListViewPageState extends State<ListViewPage> {
                               ),
                             ),
                           ),
-                          flex: 4),
+                        ),
                       Flexible(
                           child: Container(
                             width: MediaQuery.of(context).size.width,
@@ -159,26 +163,30 @@ class _ListViewPageState extends State<ListViewPage> {
                                           width: double.infinity,
                                           height: double.infinity,
                                           alignment: Alignment.center,
-                                          child: Text('최민성 님')),
-                                      flex: 5),
+                                          child: Text('최민성 님',
+                                          style: TextStyle(fontSize: 20)),
+                                      ),
+                                  ),
                                   Flexible(
                                       child: Container(
                                           width: double.infinity,
                                           height: double.infinity,
                                           alignment: Alignment.center,
-                                          child: Text('270 개')),
-                                      flex: 5)
+                                          child: Text('270 개',
+                                          style: TextStyle(fontSize: 20)),
+                                      ),
+                                  )
                                 ],
                               ),
                             ),
                           ),
-                          flex: 6)
+                      ),
                     ],
                   ),
                 ),
-                flex: 3),
+              ),
             Flexible(
-                child: Container(
+                flex: 2,
                   child: ListView.builder(
                   itemCount: titleList.length,
                   itemBuilder: (context, index) {
@@ -203,7 +211,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                   Text(
                                     titleList[index],
                                     style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black87),
                                   ),
@@ -219,10 +227,9 @@ class _ListViewPageState extends State<ListViewPage> {
                     );
                   },
                 ),
-                )
-            ),
+              ),
             //버튼은 코스 페이지 gui 확인하기 위해서 만든 버튼임
-            Flexible(
+            Container(
                 child: ElevatedButton(
                   child: Text('코스페이지로 이동'),
                   onPressed: () {
@@ -232,7 +239,7 @@ class _ListViewPageState extends State<ListViewPage> {
                     );
                   },
                 ),
-            flex: 2,)
+            )
           ],
         ));
   }
