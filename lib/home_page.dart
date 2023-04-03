@@ -6,8 +6,7 @@
 
 23.04.02
   - 코스 눌렀을 때 코스 이미지랑 세부 코스 내용 팝업창 뜨게 해놨음.
-  - 리스트뷰 -> 그리드뷰로 변경 완
-  - 미친 제목이 중간으로 안가요 도와주세요 @의정
+  - 리스트뷰 -> 그리드뷰로 변경 완. @의정
 */
 
 import 'package:flutter/material.dart';
@@ -19,19 +18,19 @@ class homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ListViewPage(),
+      home: GridViewPage(),
     );
   }
 }
 
-class ListViewPage extends StatefulWidget {
-  const ListViewPage({Key? key}) : super(key: key);
+class GridViewPage extends StatefulWidget {
+  const GridViewPage({Key? key}) : super(key: key);
 
   @override
-  State<ListViewPage> createState() => _ListViewPageState();
+  State<GridViewPage> createState() => _GridViewPageState();
 }
 
-class _ListViewPageState extends State<ListViewPage> {
+class _GridViewPageState extends State<GridViewPage> {
   var titleList = [
     '강남대학교 코스',
     '청계천 코스',
@@ -203,33 +202,28 @@ class _ListViewPageState extends State<ListViewPage> {
                       description[index]);
                 },
                 child: Card(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: SizedBox(
-                          width: 160,
-                          height: 160,
-                          child: Image.asset(imageList[index]),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: SizedBox(
+                            width: 160,
+                            height: 160,
+                            child: Image.asset(imageList[index]),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Row(
-                          children: [
-                            Center(
-                              child: Text(
-                                titleList[index],
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                        Text(
+                          titleList[index],
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );
