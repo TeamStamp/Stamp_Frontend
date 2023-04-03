@@ -6,7 +6,8 @@
 
 23.04.02
   - 코스 눌렀을 때 코스 이미지랑 세부 코스 내용 팝업창 뜨게 해놨음.
-  - 피그마에 짠것처럼 하려면 그리드뷰 써야한다는데 자꾸 오류나서 더 찾아보고 깃에 추가할게 @의정
+  - 리스트뷰 -> 그리드뷰로 변경 완
+  - 미친 제목이 중간으로 안가요 도와주세요 @의정
 */
 
 import 'package:flutter/material.dart';
@@ -82,14 +83,16 @@ class _ListViewPageState extends State<ListViewPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 20,
                 ),
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87),
+                Center(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
@@ -115,132 +118,137 @@ class _ListViewPageState extends State<ListViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-          children: [
-            Flexible(
-                flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height,
-                  decoration:
-                  BoxDecoration(border: Border.all(color: Color(0xffC5C2B3))),
-                  child: Row(
-                    children: [
-                      Flexible(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: double.infinity,
-                            color: Color(0xffF6F3E0),
+      children: [
+        Flexible(
+          flex: 1,
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            decoration:
+                BoxDecoration(border: Border.all(color: Color(0xffC5C2B3))),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    color: Color(0xffF6F3E0),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Color(0xffC5C2B3))),
+                      margin: EdgeInsets.fromLTRB(60, 25, 0, 25),
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
+                        child: Image(
+                          image: AssetImage('images/user_icon.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    color: Color(0xffF6F3E0),
+                    child: Container(
+                      color: Color(0xffF6F3E0),
+                      margin: EdgeInsets.fromLTRB(30, 30, 50, 30),
+                      child: Column(
+                        children: [
+                          Flexible(
                             child: Container(
                               width: double.infinity,
                               height: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Color(0xffC5C2B3))),
-                              margin: EdgeInsets.fromLTRB(60, 25, 0, 25),
-                              child: Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
-                                child: Image(
-                                  image: AssetImage('images/user_icon.png'),
-                                ),
-                              ),
+                              alignment: Alignment.center,
+                              child:
+                                  Text('최민성 님', style: TextStyle(fontSize: 20)),
                             ),
                           ),
-                        ),
-                      Flexible(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: double.infinity,
-                            color: Color(0xffF6F3E0),
+                          Flexible(
                             child: Container(
-                              color: Color(0xffF6F3E0),
-                              margin: EdgeInsets.fromLTRB(30, 30, 50, 30),
-                              child: Column(
-                                children: [
-                                  Flexible(
-                                      child: Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          alignment: Alignment.center,
-                                          child: Text('최민성 님',
-                                          style: TextStyle(fontSize: 20)),
-                                      ),
-                                  ),
-                                  Flexible(
-                                      child: Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          alignment: Alignment.center,
-                                          child: Text('270 개',
-                                          style: TextStyle(fontSize: 20)),
-                                      ),
-                                  )
-                                ],
+                              width: double.infinity,
+                              height: double.infinity,
+                              alignment: Alignment.center,
+                              child:
+                                  Text('270 개', style: TextStyle(fontSize: 20)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 2,
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemCount: titleList.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  print(titleList[index]);
+                  showPopup(context, titleList[index], imageList[index],
+                      description[index]);
+                },
+                child: Card(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: SizedBox(
+                          width: 160,
+                          height: 160,
+                          child: Image.asset(imageList[index]),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Row(
+                          children: [
+                            Center(
+                              child: Text(
+                                titleList[index],
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54),
                               ),
                             ),
-                          ),
-                      ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
-              ),
-            Flexible(
-                flex: 2,
-                  child: ListView.builder(
-                  itemCount: titleList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        print(titleList[index]);
-                        showPopup(context, titleList[index], imageList[index],
-                            description[index]);
-                      },
-                      child: Card(
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: Image.asset(imageList[index]),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    titleList[index],
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            //버튼은 코스 페이지 gui 확인하기 위해서 만든 버튼임
-            Container(
-                child: ElevatedButton(
-                  child: Text('코스페이지로 이동'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => coursepage()),
-                    );
-                  },
-                ),
-            )
-          ],
-        ));
+              );
+            },
+          ),
+        ),
+        //버튼은 코스 페이지 gui 확인하기 위해서 만든 버튼임
+        Container(
+          child: ElevatedButton(
+            child: Text('코스페이지로 이동'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => coursepage()),
+              );
+            },
+          ),
+        )
+      ],
+    ));
   }
 }
