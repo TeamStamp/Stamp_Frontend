@@ -5,6 +5,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'map_page.dart';
+
 class coursepage extends StatefulWidget {
   const coursepage({Key? key}) : super(key: key);
 
@@ -78,6 +80,17 @@ class _coursepageState extends State<coursepage> {
                 child: Text('댓글 리스트 형식으로 넣는 구역'),
               ),
               flex: 6
+          ),
+          Container(
+            child: ElevatedButton(
+              child: Text('map_page로 이동'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => mappage()),
+                );
+              },
+            ),
           )
         ],
       ),
