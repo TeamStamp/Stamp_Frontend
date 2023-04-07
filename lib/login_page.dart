@@ -56,20 +56,22 @@ class _loginpageState extends State<loginpage> {
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(height: MediaQuery.of(context).size.height*0.5,'images/logo_main.png'),
+              Image.asset(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  width: MediaQuery.of(context).size.width * 1,
+                  'images/logo_main.png'),
               Container(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15
-                    ,right:  MediaQuery.of(context).size.width*0.15),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.15,
+                    right: MediaQuery.of(context).size.width * 0.15),
                 child: TextFormField(
-                  validator: (value) =>
-                  value!.isEmpty ? 'ID를 입력해 주세요' : null,
+                  validator: (value) => value!.isEmpty ? 'ID를 입력해 주세요' : null,
                   onSaved: (value) => _id = value!,
                   textAlign: TextAlign.end,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -78,19 +80,21 @@ class _loginpageState extends State<loginpage> {
                       hintText: 'ID',
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.blue))),
+                          borderSide:
+                              BorderSide(width: 1, color: Colors.blue))),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*0.01),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15
-                    ,right:  MediaQuery.of(context).size.width*0.15),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.15,
+                    right: MediaQuery.of(context).size.width * 0.15),
                 child: TextFormField(
                   validator: (value) =>
-                  value!.isEmpty ? 'PASSWORD를 입력해 주세요!' : null,
+                      value!.isEmpty ? 'PASSWORD를 입력해 주세요!' : null,
                   onSaved: (value) => _id = value!,
                   textAlign: TextAlign.end,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.lock_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -99,29 +103,34 @@ class _loginpageState extends State<loginpage> {
                       hintText: 'PASSWORD',
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide: BorderSide(width: 1, color: Colors.blue)
-                      )
-                  ),
+                          borderSide:
+                              BorderSide(width: 1, color: Colors.blue))),
                   obscureText: true,
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*0.01),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Container(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.3
-                    ,right:  MediaQuery.of(context).size.width*0.3),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.3,
+                    right: MediaQuery.of(context).size.width * 0.3),
                 child: ElevatedButton(
-                  child: Text(style: TextStyle(color: Colors.black), '로그인'),
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => mainpage()));
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => mainpage()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xffF8BD53),
                   ),
+                  child:
+                      const Text(style: TextStyle(color: Colors.black), '로그인'),
                 ),
               ),
+
+              // 회원가입 창
               Container(
                 child: TextButton(
-                  child: Text(style: TextStyle(color: Colors.black), '회원가입'),
+                  child:
+                      const Text(style: TextStyle(color: Colors.black), '회원가입'),
                   onPressed: () {
                     //Navigator.push(context, MaterialPageRoute(builder: (context)=>register_page()));
                     showDialog(
@@ -129,91 +138,166 @@ class _loginpageState extends State<loginpage> {
                         barrierDismissible: false, // 바깥 영역 터치시 닫을지 여부
                         builder: (BuildContext context) {
                           return AlertDialog(
+                            backgroundColor: Color(0xffF9F3E7),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        Center(
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: MediaQuery.of(context).size.width * 0.22,
+                                                right: MediaQuery.of(context).size.width * 0),
+                                            child: Text(
+                                                style: TextStyle(fontSize: 20,
+                                                    fontWeight: FontWeight.bold, color: Colors.black),
+                                                '회원가입'),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              left: MediaQuery.of(context).size.width * 0.1,
+                                              right: MediaQuery.of(context).size.width * 0),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            icon: Icon(Icons.exit_to_app_rounded),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left:
+                                            MediaQuery.of(context).size.width * 0,
+                                        right:
+                                            MediaQuery.of(context).size.width * 0.5),
+                                    child: Text('닉네임',
+                                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                                  ),
+                                  Container(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.left,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0)),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20.0)),
+                                              borderSide: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.blue))),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: MediaQuery.of(context).size.width * 0,
+                                        right: MediaQuery.of(context).size.width * 0.5),
+                                    child: Text('아이디',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  Container(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.left,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0)),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20.0)),
+                                              borderSide: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.blue))),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: MediaQuery.of(context).size.width * 0,
+                                        right: MediaQuery.of(context).size.width * 0.47),
+                                    child: Text('비밀번호',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  Container(
+                                    child: TextFormField(
+                                      textAlign: TextAlign.left,
+                                      decoration: const InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0)),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20.0)),
+                                              borderSide: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.blue))),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: MediaQuery.of(context).size.width * 0,
+                                        right: MediaQuery.of(context).size.width * 0.4),
+                                    child: Text('비밀번호 확인',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  TextFormField(
+                                    textAlign: TextAlign.left,
+                                    decoration: const InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0)),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0)),
+                                            borderSide: BorderSide(
+                                                width: 1, color: Colors.blue))),
+                                  ),
+                                ],
+                              ),
+                            ),
                             actions: [
-                              Container(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Text(textAlign: TextAlign.left ,style:
-                                      TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.black),'회원가입'),
-                                      Container(),
-                                      Container(
-                                        child: TextFormField(
-                                          textAlign: TextAlign.left,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                              ),
-                                              filled: true,
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                                  borderSide: BorderSide(width: 1, color: Colors.blue)
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                      Text('아이디'),
-                                      Container(
-                                        child: TextFormField(
-                                          textAlign: TextAlign.left,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                              ),
-                                              filled: true,
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                                  borderSide: BorderSide(width: 1, color: Colors.blue)
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                      Text('비밀번호'),
-                                      Container(
-                                        child: TextFormField(
-                                          textAlign: TextAlign.left,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                              ),
-                                              filled: true,
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                                  borderSide: BorderSide(width: 1, color: Colors.blue)
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                      Text('비밀번호 확인'),
-                                      Container(
-                                        child: TextFormField(
-                                          textAlign: TextAlign.left,
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                              ),
-                                              filled: true,
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                                  borderSide: BorderSide(width: 1, color: Colors.blue)
-                                              )
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        child: const Text('확인'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
+                              Center(
+                                child: Container(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xffFFF3D3)),
+                                    child: const Text('확인',
+                                        style: TextStyle(color: Colors.black)),
                                   ),
                                 ),
                               )
                             ],
                           );
-                        }
-                    );
+                        });
                   },
                 ),
               )
