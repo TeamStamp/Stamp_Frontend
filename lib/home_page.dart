@@ -58,6 +58,7 @@ class _GridViewPageState extends State<GridViewPage> {
     '- - - -'
   ];
 
+  /*
   void showPopup(context, title, image, description) {
     showDialog(
       context: context,
@@ -112,7 +113,7 @@ class _GridViewPageState extends State<GridViewPage> {
       },
     );
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,49 +190,55 @@ class _GridViewPageState extends State<GridViewPage> {
         ),
         Flexible(
           flex: 2,
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            itemCount: titleList.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  print(titleList[index]);
-                  showPopup(context, titleList[index], imageList[index],
-                      description[index]);
-                },
-                child: Card(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: SizedBox(
-                            width: 160,
-                            height: 160,
-                            child: Image.asset(imageList[index]),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: titleList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => coursepage()),
+                    );
+                  },
+                  child: Card(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              child: Image.asset(imageList[index]),
+                            ),
                           ),
-                        ),
-                        Text(
-                          titleList[index],
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+                          Text(
+                            titleList[index],
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
+
         //버튼은 코스 페이지 gui 확인하기 위해서 만든 버튼임
-        Container(
+/*        Container(
           child: ElevatedButton(
             child: Text('코스페이지로 이동'),
             onPressed: () {
@@ -242,6 +249,7 @@ class _GridViewPageState extends State<GridViewPage> {
             },
           ),
         )
+*/
       ],
     ));
   }
