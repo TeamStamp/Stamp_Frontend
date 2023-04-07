@@ -117,13 +117,18 @@ class _coursepageState extends State<coursepage> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black45, width: 2)
                       ),
-                      alignment: Alignment.centerLeft,
                       height: MediaQuery.of(context).size.height/12,
-                      child: Column(
-                        children: [
-                          Text(' ${user[index]} :'),
-                          Text('   ${comment[index]}')
-                        ],
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        color: Colors.black26,
+                        child: Column(
+                          children: [
+                            Text(' ${user[index]} :'),
+                            Text(' ${comment[index]}')
+                          ],
+                        ),
                       ),
                     );
                   },

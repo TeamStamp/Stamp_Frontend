@@ -122,7 +122,7 @@ class _GridViewPageState extends State<GridViewPage> {
         Flexible(
           flex: 1,
           child: Container(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration:
                 BoxDecoration(border: Border.all(color: Color(0xffC5C2B3))),
@@ -191,8 +191,8 @@ class _GridViewPageState extends State<GridViewPage> {
         Flexible(
           flex: 2,
           child: Container(
-            width: double.infinity,
-            height: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
