@@ -209,23 +209,23 @@ class _GridViewPageState extends State<GridViewPage> {
                   child: Card(
                     child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.height * 0.7,
+                          Flexible(
+                            child: Container(
                               child: Image.asset(imageList[index]),
+                              width: MediaQuery.of(context).size.width*0.8,
+                              height: MediaQuery.of(context).size.height*0.8,
                             ),
                           ),
-                          Text(
-                            titleList[index],
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black54),
-                            textAlign: TextAlign.center,
+                          Flexible(
+                              child: Text(
+                                  titleList[index],
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.center)
                           )
                         ],
                       ),
