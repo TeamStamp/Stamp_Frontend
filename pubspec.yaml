@@ -66,6 +66,7 @@ flutter:
     - images/place4.jpg
     - images/place5.jpg
     - images/place6.png
+    - images/Ranking.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
