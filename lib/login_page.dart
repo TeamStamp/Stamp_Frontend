@@ -12,6 +12,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:stamp_front/Models/Post.dart';
 import 'package:stamp_front/main_page.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
 
@@ -49,6 +50,8 @@ class _loginpageState extends State<loginpage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
+
+  final List<Post> posts = [];
 
   late String _id;
   late String _password;
@@ -166,7 +169,26 @@ class _loginpageState extends State<loginpage> {
                       const Text(style: TextStyle(color: Colors.black), '로그인'),
                 ),
               ),
-
+              // ElevatedButton(
+              //     onPressed: () async {
+              //       posts.addAll(await authRepository.apiTest());
+              //       setState(() {});
+              //     },
+              //     child: Text('test')),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   itemBuilder: (context, index) => Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text('타이틀' + posts[index].title),
+              //       Text('유저id' + posts[index].userId.toString()),
+              //       Text('완성:' + posts[index].completed.toString()),
+              //       SizedBox(height: 8,),
+              //       Divider(),
+              //     ],
+              //   ),
+              //   itemCount: posts.length,
+              // ),
               // 회원가입 창
               Container(
                 child: TextButton(

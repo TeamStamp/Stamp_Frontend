@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stamp_front/Models/Post.dart';
 
 class AuthRepository {
   Future<bool> register(String username, String email, String password) async {
@@ -32,6 +33,7 @@ class AuthRepository {
           });
       if(response.statusCode == 200) {
         final accessToken = jsonDecode(response.body)['data']['accessToken'];
+
         final SharedPreferences prefs = await SharedPreferences.getInstance();
 
         prefs.setString('accessToken', accessToken);
@@ -42,5 +44,28 @@ class AuthRepository {
       return false;
     }
     return false;
+  }
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('accessToken') ?? '';
+  }
+
+  apiTest() async {
+    var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
+    try {
+      Response response = await http.get(url, headers: {
+        'Authorization': await getToken(),
+      });
+
+      final List<dynamic> data = jsonDecode(response.body);
+      List<Post> posts = data.map<Post>((element) {
+        return Post.fromJson(element);
+      }).toList();
+      return posts;
+      // List<Post> posts =
+    } catch (e){
+      print(e);
+    }
   }
 }
