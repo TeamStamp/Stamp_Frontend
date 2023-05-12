@@ -58,17 +58,136 @@ class _coursepageState extends State<coursepage> {
                         image: AssetImage('images/course_page.image02.png')
                     )
                 ),
-                child: Center(
-                  child: ElevatedButton(
-                    child: Text('map_page로 이동'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => mappage()),
-                      );
-                    },
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(35),
+                            border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage('images/place1.jpg')
+                            )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/place2.jpg')
+                              )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/place3.jpg')
+                              )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/place4.jpg')
+                              )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/place5.jpg')
+                              )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                      InkWell(
+                        child:  Container(
+                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          width: 70,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('images/place6.png')
+                              )
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => mappage())
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ),
+                )
               ),
               flex: 5
           ),
