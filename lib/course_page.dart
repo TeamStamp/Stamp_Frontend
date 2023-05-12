@@ -4,7 +4,6 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:stamp_front/main_page.dart';
 import 'map_page.dart';
 import 'package:stamp_front/stamp_page.dart';
 import 'package:stamp_front/profile_page.dart';
