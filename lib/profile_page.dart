@@ -9,9 +9,16 @@
 
 import 'package:flutter/material.dart';
 
-class profilepage extends StatelessWidget {
+class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
 
+  @override
+  State<profilepage> createState() => _profilepage();
+}
+
+class _profilepage extends State<profilepage> {
+  final List<String> profileplaces = <String> ['1번 장소', '2번 장소', '3번 장소', '4번 장소', '5번 장소'];
+  final List<String> profileplacestoken = <String> ['1번 장소 개수', '2번 장소 개수', '3번 장소 개수', '4번 장소 개수', '5번 장소 개수'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,93 +114,7 @@ class profilepage extends StatelessWidget {
                             right: MediaQuery.of(context).size.width * 0),
                         child: IconButton(
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    backgroundColor: Color(0xffF9F3E7),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    content: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                    padding: EdgeInsets.only(
-                                                        left: MediaQuery.of(context).size.width * 0.2,
-                                                        right: MediaQuery.of(context).size.width * 0),
-                                                    child: Text(
-                                                        style: TextStyle(fontSize: 20,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Colors.black),
-                                                        '회원 정보 수정'),
-                                                  ),
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: MediaQuery.of(context).size.width * 0.05,
-                                                      right: MediaQuery.of(context).size.width * 0),
-                                                  child: IconButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    icon: Icon(Icons.exit_to_app_rounded),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: MediaQuery.of(context).size.height * 0.03),
-                                          Container(
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                    flex: 1,
-                                                    child: Text('새로운 닉네임 : ')),
-                                                Flexible(
-                                                  flex: 3,
-                                                    child: TextFormField(
-                                                      textAlign: TextAlign.left,
-                                                      decoration: const InputDecoration(
-                                                          border: OutlineInputBorder(
-                                                            borderRadius: BorderRadius.all(
-                                                                Radius.circular(20.0)),
-                                                          ),
-                                                          filled: false,
-                                                          fillColor: Colors.white,
-                                                          focusedBorder: OutlineInputBorder(
-                                                              borderRadius: BorderRadius.all(
-                                                                  Radius.circular(20.0)),
-                                                              borderSide: BorderSide(
-                                                                  width: 1,
-                                                                  color: Colors.blue))),
-                                                    ),)
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    actions: [
-                                      Center(
-                                        child: Container(
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(0xffFFF3D3)),
-                                            child: const Text('확인',
-                                                style: TextStyle(color: Colors.black)),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                });
+                            ProfileuserShowDialog(context);
                           },
                           icon: Icon(Icons.settings, size: 20,
                           ),
@@ -201,38 +122,41 @@ class profilepage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Color(0xffEBC668), width: 2),
-                  ),
-                    child: ListView.separated(
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Text('zzz'),
-                                ),
-
-                              Container(
-
-                              )
-                            ],
+                 Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height*0.4,
+                      child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: Color(0xffCDAD5C), width: 2)
                           ),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider(
-                            color: Colors.black,
-                            thickness: 2.0,
-                        );
-                      },
-                      itemCount: ProfileItem.length,
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(15),
+                            itemCount: profileplaces.length,
+                            itemBuilder: (BuildContext context, int index){
+                              return Container(
+                                padding: EdgeInsets.all(5),
+                                height: MediaQuery.of(context).size.height*0.05,
+                                child: Row(
+                                  children: [
+                                    Text('${profileplaces[index]}에 대한 설명'),
+                                    SizedBox(width: 40,),
+                                    Text('${profileplacestoken[index]}에 대한 설명'),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (BuildContext context, int index) => const Divider(
+                              color: Color(0xffCDAD5C),
+                              thickness: 2,
+                            ),
+                          )
+                      ),
                     ),
-                )
+
 
                 /*
                 SingleChildScrollView(
@@ -303,6 +227,184 @@ class profilepage extends StatelessWidget {
         ),
       ],
     ));
+  }
+
+  Future<dynamic> ProfileuserShowDialog(BuildContext context) {
+    return showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Color(0xffF9F3E7),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  content: SingleChildScrollView(
+                                    child: Form(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: 50,
+                                              ),
+                                              Text(
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black),
+                                                  '회원정보 수정'),
+                                              SizedBox(
+                                                width: 50,
+                                                child: Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    icon: Icon(Icons.exit_to_app_rounded),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  flex: 5,
+                                                  child:
+                                                    Text('새로운 닉네임 :'),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                Flexible(
+                                                  flex: 6,
+                                                    child: TextFormField(
+                                                      textAlign: TextAlign.left,
+                                                      decoration: const InputDecoration(
+                                                          contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+                                                          border: OutlineInputBorder(
+                                                            borderRadius:
+                                                            BorderRadius.all(Radius.circular(20.0)),
+                                                          ),
+                                                          filled: true,
+                                                          fillColor: Colors.white,
+                                                          focusedBorder: OutlineInputBorder(
+                                                              borderRadius:BorderRadius.all(Radius.circular(20.0)),
+                                                              borderSide:BorderSide(width: 1, color: Colors.blue))),
+                                                    ),)
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  flex: 5,
+                                                  child:
+                                                  Text('기존 비밀번호 :'),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                Flexible(
+                                                  flex: 6,
+                                                  child: TextFormField(
+                                                    textAlign: TextAlign.left,
+                                                    decoration: const InputDecoration(
+                                                        contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+                                                        border: OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.all(Radius.circular(20.0)),
+                                                        ),
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        focusedBorder: OutlineInputBorder(
+                                                            borderRadius:BorderRadius.all(Radius.circular(20.0)),
+                                                            borderSide:BorderSide(width: 1, color: Colors.blue))),
+                                                  ),)
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  flex: 5,
+                                                  child:
+                                                  Text('신규 비밀번호 :'),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                Flexible(
+                                                  flex: 6,
+                                                  child: TextFormField(
+                                                    textAlign: TextAlign.left,
+                                                    decoration: const InputDecoration(
+                                                        contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+                                                        border: OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.all(Radius.circular(20.0)),
+                                                        ),
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        focusedBorder: OutlineInputBorder(
+                                                            borderRadius:BorderRadius.all(Radius.circular(20.0)),
+                                                            borderSide:BorderSide(width: 1, color: Colors.blue))),
+                                                  ),)
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                          Container(
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                  flex: 5,
+                                                  child:
+                                                  Text('비밀번호 확인 :'),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                Flexible(
+                                                  flex: 6,
+                                                  child: TextFormField(
+                                                    textAlign: TextAlign.left,
+                                                    decoration: const InputDecoration(
+                                                        contentPadding: EdgeInsets.symmetric(vertical: 4.0),
+                                                        border: OutlineInputBorder(
+                                                          borderRadius:
+                                                          BorderRadius.all(Radius.circular(20.0)),
+                                                        ),
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        focusedBorder: OutlineInputBorder(
+                                                            borderRadius:BorderRadius.all(Radius.circular(20.0)),
+                                                            borderSide:BorderSide(width: 1, color: Colors.blue))),
+                                                  ),)
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  actions: [
+                                    Center(
+                                      child: Container(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color(0xffFFF3D3)),
+                                          child: const Text('확인',
+                                              style: TextStyle(color: Colors.black)),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              });
   }
 }
 final ProfileItem = {
