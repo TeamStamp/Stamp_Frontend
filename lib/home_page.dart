@@ -12,25 +12,15 @@
 import 'package:flutter/material.dart';
 import 'package:stamp_front/course_page.dart';
 
-class homepage extends StatelessWidget {
-  const homepage({Key? key}) : super(key: key);
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: GridViewPage(),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class GridViewPage extends StatefulWidget {
-  const GridViewPage({Key? key}) : super(key: key);
-
-  @override
-  State<GridViewPage> createState() => _GridViewPageState();
-}
-
-class _GridViewPageState extends State<GridViewPage> {
+class _HomePageState extends State<HomePage> {
   var titleList = [
     '강남대학교 코스',
     '청계천 코스',
@@ -116,128 +106,127 @@ class _GridViewPageState extends State<GridViewPage> {
 */
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration:
-                BoxDecoration(border: Border.all(color: Color(0xffC5C2B3))),
-                child: Row(
-                  children: [
-                    Flexible(
+    return Column(
+      children: [
+        Flexible(
+          flex: 1,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration:
+            BoxDecoration(border: Border.all(color: Color(0xffC5C2B3))),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    color: Color(0xffF6F3E0),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Color(0xffC5C2B3))),
+                      margin: EdgeInsets.fromLTRB(60, 25, 0, 25),
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: double.infinity,
                         height: double.infinity,
-                        color: Color(0xffF6F3E0),
-                        child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Color(0xffC5C2B3))),
-                          margin: EdgeInsets.fromLTRB(60, 25, 0, 25),
-                          child: Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
-                            child: Image(
-                              image: AssetImage('images/user_icon.png'),
+                        margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
+                        child: Image(
+                          image: AssetImage('images/user_icon.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    color: Color(0xffF6F3E0),
+                    child: Container(
+                      color: Color(0xffF6F3E0),
+                      margin: EdgeInsets.fromLTRB(30, 30, 50, 30),
+                      child: Column(
+                        children: [
+                          Flexible(
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              alignment: Alignment.center,
+                              child:
+                              Text('최민성 님', style: TextStyle(fontSize: 20)),
                             ),
                           ),
-                        ),
+                          Flexible(
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              alignment: Alignment.center,
+                              child:
+                              Text('270 개', style: TextStyle(fontSize: 20)),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    Flexible(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: double.infinity,
-                        color: Color(0xffF6F3E0),
-                        child: Container(
-                          color: Color(0xffF6F3E0),
-                          margin: EdgeInsets.fromLTRB(30, 30, 50, 30),
-                          child: Column(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  alignment: Alignment.center,
-                                  child:
-                                  Text('최민성 님', style: TextStyle(fontSize: 20)),
-                                ),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  alignment: Alignment.center,
-                                  child:
-                                  Text('270 개', style: TextStyle(fontSize: 20)),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
                   ),
-                  itemCount: titleList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => coursepage()),
-                        );
-                      },
-                      child: Card(
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  child: Image.asset(imageList[index]),
-                                  width: MediaQuery.of(context).size.width*0.8,
-                                  height: MediaQuery.of(context).size.height*0.8,
-                                ),
-                              ),
-                              Flexible(
-                                  child: Text(
-                                      titleList[index],
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black54),
-                                      textAlign: TextAlign.center)
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 2,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: titleList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => coursepage()),
                     );
                   },
-                ),
-              ),
+                  child: Card(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              child: Image.asset(imageList[index]),
+                              width: MediaQuery.of(context).size.width*0.8,
+                              height: MediaQuery.of(context).size.height*0.8,
+                            ),
+                          ),
+                          Flexible(
+                              child: Text(
+                                  titleList[index],
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.center)
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          ],
-        ));
+          ),
+        ),
+      ],
+    );
   }
 }
 

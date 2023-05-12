@@ -4,8 +4,11 @@
  */
 
 import 'package:flutter/material.dart';
-
+import 'package:stamp_front/main_page.dart';
 import 'map_page.dart';
+import 'package:stamp_front/stamp_page.dart';
+import 'package:stamp_front/profile_page.dart';
+import 'package:stamp_front/home_page.dart';
 
 class coursepage extends StatefulWidget {
   const coursepage({Key? key}) : super(key: key);
@@ -19,9 +22,30 @@ class _coursepageState extends State<coursepage> {
   final List<String> user = <String> ['김민기', '김영훈', '최민성'];
   final List<String> comment = <String> ['댓글 1', '댓글 2', '댓글 3'];
 
+  int _selectedIndex = 1;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    stamppage(),
+    HomePage(),
+    profilepage()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      appBar: AppBar(
+        title: Image(
+          image: AssetImage('images/logo_appbar.png'),
+          height: MediaQuery.of(context).size.height/20,
+        ),
+      ),
       body: Column(
         children: [
           // 앱바 바로 밑에 위치한 카카오지하철 느낌의 로고
@@ -32,6 +56,7 @@ class _coursepageState extends State<coursepage> {
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
                   image: DecorationImage(
+
                       fit: BoxFit.cover,
                       image: AssetImage('images/course_page.image01.png')
                   )
@@ -67,7 +92,7 @@ class _coursepageState extends State<coursepage> {
                     children: [
                       InkWell(
                         child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          margin: EdgeInsets.fromLTRB(15, 0, 5, 0),
                           width: 70,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(35),
@@ -167,7 +192,7 @@ class _coursepageState extends State<coursepage> {
                       ),
                       InkWell(
                         child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          margin: EdgeInsets.fromLTRB(5, 0, 15, 0),
                           width: 70,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(35),
@@ -258,6 +283,29 @@ class _coursepageState extends State<coursepage> {
           )
         ],
       ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _onItemTapped,
+          currentIndex: _selectedIndex,
+          backgroundColor: Color(0xffF8BD53),
+          elevation: 5,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.task_alt), label: 'Stamp'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_filled), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.supervised_user_circle), label: 'Profile'),
+          ],
+        )
     );
   }
+
+  void initState() {
+    super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
+
 }

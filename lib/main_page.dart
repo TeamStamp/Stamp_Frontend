@@ -25,7 +25,7 @@ class _mainpageState extends State<mainpage> {
 
   final List<Widget> _widgetOptions = <Widget>[
     stamppage(),
-    homepage(),
+    HomePage(),
     profilepage()
   ];
 
@@ -37,43 +37,39 @@ class _mainpageState extends State<mainpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(MediaQuery.of(context).size.height/12),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Color(0xffF8BD53),
-            elevation: 5,
-            centerTitle: true,
-            title: Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height/20,
-              color: Color(0xffF8BD53),
-              child: Image(
+    return WillPopScope(
+      onWillPop: (){
+        return Future.value(false);
+      },
+      child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(MediaQuery.of(context).size.height/12),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              title: Image(
                 image: AssetImage('images/logo_appbar.png'),
-                width: double.infinity,
-              height: MediaQuery.of(context).size.height/20,
+                height: MediaQuery.of(context).size.height/20,
               ),
             ),
           ),
-        ),
-        body: SafeArea(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: _onItemTapped,
-          currentIndex: _selectedIndex,
-          backgroundColor: Color(0xffF8BD53),
-          elevation: 5,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.task_alt), label: 'Stamp'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.supervised_user_circle), label: 'Profile'),
-          ],
-        )
+          body: SafeArea(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: _onItemTapped,
+            currentIndex: _selectedIndex,
+            backgroundColor: Color(0xffF8BD53),
+            elevation: 5,
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.task_alt), label: 'Stamp'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home_filled), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.supervised_user_circle), label: 'Profile'),
+            ],
+          )
+      ),
     );
   }
 
