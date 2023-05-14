@@ -8,6 +8,9 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:stamp_front/repository/auth_repository.dart';
+import 'Models/ReadUser.dart';
+import 'Models/Update.dart';
 
 class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
@@ -17,6 +20,9 @@ class profilepage extends StatefulWidget {
 }
 
 class _profilepage extends State<profilepage> {
+  final authRepository = AuthRepository();
+  final usernameController = TextEditingController();
+
   final List<String> profileplaces = <String>[
     '1번 장소',
     '2번 장소',
@@ -35,6 +41,16 @@ class _profilepage extends State<profilepage> {
     '6번 장소 개수',
     '7번 장소 개수'
   ];
+
+
+   late Future<ReadUser> readuser;
+   late Future<Update> fetchAlbum;
+  @override
+  void initState() {
+    super.initState();
+    readuser = authRepository.readUserInfo();
+    fetchAlbum  = authRepository.fetchalbum();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +105,16 @@ class _profilepage extends State<profilepage> {
                                   width: double.infinity,
                                   height: double.infinity,
                                   alignment: Alignment.center,
-                                  child: Text('최민성 님',
-                                      style: TextStyle(fontSize: 20)),
+                                  child: FutureBuilder<ReadUser>(
+                                    future: readuser,
+                                    builder: (context, snapshot){
+                                      if(snapshot.hasData){
+                                        return Text(snapshot.data!.username);
+                                      }else{
+                                        return Text('줫까세요');
+                                      }
+                                    },
+                                  )
                                 ),
                               ),
                               Flexible(
@@ -261,6 +285,7 @@ class _profilepage extends State<profilepage> {
                           Flexible(
                             flex: 6,
                             child: TextFormField(
+                              controller: usernameController,
                               textAlign: TextAlign.left,
                               decoration: const InputDecoration(
                                   contentPadding:
@@ -390,14 +415,28 @@ class _profilepage extends State<profilepage> {
             actions: [
               Center(
                 child: Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffFFF3D3)),
-                    child:
-                        const Text('확인', style: TextStyle(color: Colors.black)),
+                  child: FutureBuilder<Update>(
+                    future: fetchAlbum,
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState == ConnectionState.done){
+                        if(snapshot.hasData){
+                          return ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                fetchAlbum = authRepository.updatealbum(usernameController.text);
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffFFF3D3)),
+                            child:
+                            const Text('확인', style: TextStyle(color: Colors.black)),
+                          );
+                        }else if(snapshot.hasError){
+                          return Text('${snapshot.error}');
+                        }
+                      }
+                      return const CircularProgressIndicator();
+                    }
                   ),
                 ),
               )
@@ -406,16 +445,3 @@ class _profilepage extends State<profilepage> {
         });
   }
 }
-
-final ProfileItem = {
-  "list": [
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-    {"course": "용인시 기흥구", "point": "1/30"},
-  ]
-};
