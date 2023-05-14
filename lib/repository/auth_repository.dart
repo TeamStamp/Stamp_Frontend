@@ -99,7 +99,7 @@ class AuthRepository {
       throw Exception('Failed to load album');
     }
   }
-  Future<Update> updatealbum(String username) async {
+  Future<Update> updatealbum(String username, String password) async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/update');
     Response response = await http.put(url,
         headers: {
@@ -107,10 +107,10 @@ class AuthRepository {
           'x-auth-token': await getToken()
         },
         body: jsonEncode({"username": username,
-                          "password": 123
+                          "password": password
         }));
     if(response.statusCode == 200) {
-      return Update.fromJson(json.decode(response.body));
+      return Update.fromJson(json.decode(response.body)['data']);
     }else{
       throw Exception('실패');
     }

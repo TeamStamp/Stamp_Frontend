@@ -21,7 +21,11 @@ class profilepage extends StatefulWidget {
 
 class _profilepage extends State<profilepage> {
   final authRepository = AuthRepository();
+  final profileformKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final newpasswordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
   final List<String> profileplaces = <String>[
     '1번 장소',
@@ -109,7 +113,7 @@ class _profilepage extends State<profilepage> {
                                     future: readuser,
                                     builder: (context, snapshot){
                                       if(snapshot.hasData){
-                                        return Text(snapshot.data!.username);
+                                        return Text(snapshot.data!.username+' 님', style: TextStyle(fontSize: 20));
                                       }else{
                                         return Text('줫까세요');
                                       }
@@ -241,203 +245,229 @@ class _profilepage extends State<profilepage> {
             backgroundColor: Color(0xffF9F3E7),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            content: SingleChildScrollView(
-              child: Form(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            content: FutureBuilder<Update>(
+              future: fetchAlbum,
+              builder: (context, snapshot) {
+                return SingleChildScrollView(
+                  child: Form(
+                    key: profileformKey,
+                    child: Column(
                       children: [
-                        SizedBox(
-                          width: 50,
-                        ),
-                        Text(
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            '회원정보 수정'),
-                        SizedBox(
-                          width: 50,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: Icon(Icons.exit_to_app_rounded),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 50,
                             ),
+                            Text(
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                                '회원정보 수정'),
+                            SizedBox(
+                              width: 50,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: Icon(Icons.exit_to_app_rounded),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        Container(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: Text('새로운 닉네임 :'),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                flex: 6,
+                                child: TextFormField(
+                                  validator: (value) =>
+                                  value!.isEmpty ? '새로운 닉네임을 입력해 주세요!' : null,
+                                  controller: usernameController,
+                                  textAlign: TextAlign.left,
+                                  decoration: const InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 4.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0)),
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.blue))),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        Container(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: Text('기존 비밀번호 :'),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                flex: 6,
+                                child: TextFormField(
+                                  controller: passwordController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return '값을 입력해주세요';
+                                    }else if(newpasswordController!=snapshot.data!.password){
+                                      return '기존 비밀번호가 맞지 않습니다';
+                                    }
+                                    return null;
+                                  },
+                                  textAlign: TextAlign.left,
+                                  decoration: const InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 4.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0)),
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.blue))),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        Container(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: Text('신규 비밀번호 :'),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                flex: 6,
+                                child: TextFormField(
+                                  controller: newpasswordController,
+                                  validator: (value) =>
+                                  value!.isEmpty ? 'PASSWORD를 입력해 주세요!' : null,
+                                  textAlign: TextAlign.left,
+                                  decoration: const InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 4.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0)),
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.blue))),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                        Container(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                child: Text('비밀번호 확인 :'),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                flex: 6,
+                                child: TextFormField(
+                                  controller: passwordConfirmController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return '값을 입력해주세요';
+                                    }else if(newpasswordController!=passwordConfirmController){
+                                      return '비밀번호가 맞지 않습니다';
+                                    }
+                                    return null;
+                                  },
+                                  textAlign: TextAlign.left,
+                                  decoration: const InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(vertical: 4.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(20.0)),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0)),
+                                          borderSide: BorderSide(
+                                              width: 1, color: Colors.blue))),
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 5,
-                            child: Text('새로운 닉네임 :'),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            flex: 6,
-                            child: TextFormField(
-                              controller: usernameController,
-                              textAlign: TextAlign.left,
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 4.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.blue))),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 5,
-                            child: Text('기존 비밀번호 :'),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            flex: 6,
-                            child: TextFormField(
-                              textAlign: TextAlign.left,
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 4.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.blue))),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 5,
-                            child: Text('신규 비밀번호 :'),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            flex: 6,
-                            child: TextFormField(
-                              textAlign: TextAlign.left,
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 4.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.blue))),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Container(
-                      child: Row(
-                        children: [
-                          Flexible(
-                            flex: 5,
-                            child: Text('비밀번호 확인 :'),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Flexible(
-                            flex: 6,
-                            child: TextFormField(
-                              textAlign: TextAlign.left,
-                              decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 4.0),
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20.0)),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.blue))),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              }
             ),
             actions: [
               Center(
-                child: Container(
-                  child: FutureBuilder<Update>(
-                    future: fetchAlbum,
-                    builder: (context, snapshot) {
-                      if(snapshot.connectionState == ConnectionState.done){
-                        if(snapshot.hasData){
-                          return ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                fetchAlbum = authRepository.updatealbum(usernameController.text);
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xffFFF3D3)),
-                            child:
-                            const Text('확인', style: TextStyle(color: Colors.black)),
-                          );
-                        }else if(snapshot.hasError){
-                          return Text('${snapshot.error}');
-                        }
-                      }
-                      return const CircularProgressIndicator();
-                    }
-                  ),
+                child: FutureBuilder(
+                  future: fetchAlbum,
+                  builder: (context, snapshot) {
+                    return Container(
+                      child:  ElevatedButton(
+                                onPressed: () {
+                                setState(() {
+
+                                    fetchAlbum = authRepository.updatealbum(
+                                        usernameController.text,
+                                        newpasswordController.text);
+
+                                });
+                                  },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xffFFF3D3)),
+                                child: const Text(
+                                    '확인', style: TextStyle(color: Colors.black)),
+                              )
+                    );}
+
                 ),
               )
             ],
