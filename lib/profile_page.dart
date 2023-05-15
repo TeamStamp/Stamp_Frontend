@@ -447,18 +447,14 @@ class _profilepage extends State<profilepage> {
             ),
             actions: [
               Center(
-                child: FutureBuilder(
-                  future: fetchAlbum,
-                  builder: (context, snapshot) {
-                    return Container(
+                child: Container(
                       child:  ElevatedButton(
                                 onPressed: () {
                                 setState(() {
-
                                     fetchAlbum = authRepository.updatealbum(
                                         usernameController.text,
                                         newpasswordController.text);
-
+                                    Navigator.pop(context);
                                 });
                                   },
                                 style: ElevatedButton.styleFrom(
@@ -466,9 +462,7 @@ class _profilepage extends State<profilepage> {
                                 child: const Text(
                                     '확인', style: TextStyle(color: Colors.black)),
                               )
-                    );}
-
-                ),
+                    )
               )
             ],
           );

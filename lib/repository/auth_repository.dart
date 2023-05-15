@@ -115,5 +115,24 @@ class AuthRepository {
       throw Exception('실패');
     }
   }
+  // Future<bool> updatealbum(String username, String password) async {
+  //   var url = Uri.http('54.215.135.43:8080', 'api/auth/update');
+  //   try {
+  //     Response response = await http.put(url,
+  //         body: jsonEncode({"username": username, "password": password}),
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'x-auth-token': await getToken()
+  //         });
+  //     if(response.statusCode == 200) {
+  //       return true;
+  //     }
+  //   } catch (e){
+  //     print(e);
+  //     return false;
+  //   }
+  //   print('method end');
+  //   return false;
+  // }
 
 }

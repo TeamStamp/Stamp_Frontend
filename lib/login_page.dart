@@ -340,8 +340,6 @@ class _loginpageState extends State<loginpage> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return '값을 입력해주세요';
-                        }else if(passwordController!=passwordConfirmController){
-                          return '비밀번호가 맞지 않습니다';
                         }
                         return null;
                       },
@@ -367,11 +365,11 @@ class _loginpageState extends State<loginpage> {
                 child: Container(
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (registerFormKey.currentState!.validate()) {
-                        await authRepository.register(usernameController.text,
-                            emailController.text, passwordController.text);
-                            Navigator.pop(context);
-                      }
+                        if (registerFormKey.currentState!.validate()) {
+                          await authRepository.register(usernameController.text,
+                              emailController.text, passwordController.text);
+                          Navigator.pop(context);
+                        }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffFFF3D3)),
