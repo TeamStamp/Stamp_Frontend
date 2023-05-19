@@ -149,9 +149,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 37.275760;
+                          double longitude = 127.132564;
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => mappage())
+                            MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                            )
                           );
                         },
                       ),
@@ -169,9 +172,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 37.5682;
+                          double longitude = 126.9784;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => mappage())
+                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                              )
                           );
                         },
                       ),
@@ -189,9 +195,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 40.7128;
+                          double longitude = -74.0060;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => mappage())
+                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                              )
                           );
                         },
                       ),
@@ -209,9 +218,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 40.7128;
+                          double longitude = -74.0060;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => mappage())
+                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                              )
                           );
                         },
                       ),
@@ -229,9 +241,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 40.7128;
+                          double longitude = -74.0060;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => mappage())
+                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                              )
                           );
                         },
                       ),
@@ -249,9 +264,12 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
+                          double latitude = 40.7128;
+                          double longitude = -74.0060;
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => mappage())
+                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
+                              )
                           );
                         },
                       ),

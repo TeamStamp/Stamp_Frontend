@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class mappage extends StatefulWidget {
-  const mappage({Key? key}) : super(key: key);
+  final double latitude;
+  final double longitude;
+
+  const mappage({Key? key, required this.latitude, required this.longitude}) : super(key: key);
 
   @override
   State<mappage> createState() => MapSampleState();
@@ -12,109 +17,113 @@ class mappage extends StatefulWidget {
 class MapSampleState extends State<mappage> {
   final Completer<GoogleMapController> _controller =
   Completer<GoogleMapController>();
+  LocationData? _currentLocation;
+  Location location = Location();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.275760, 127.132564),
-    zoom: 14.4746,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 30.8334901395799,
-      target: LatLng(37.277159, 127.134085),
-      tilt: 59.440717697143555,
-      zoom: 17.551926040649414);
+  Future<void> _getCurrentLocation() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      _currentLocation = _locationData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    CameraPosition initialCameraPosition = CameraPosition(
+      target: LatLng(widget.latitude, widget.longitude),
+      zoom: 14.4746,
+    );
+
+    CameraPosition currentCameraPosition = _currentLocation != null
+        ? CameraPosition(
+      target: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
+      zoom: 14.4746,
+    )
+        : initialCameraPosition;
+
+    double distance = _currentLocation != null
+        ? Geolocator.distanceBetween(
+      widget.latitude,
+      widget.longitude,
+      _currentLocation!.latitude!,
+      _currentLocation!.longitude!,
+    )
+        : 0;
+
     return Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
+        initialCameraPosition: initialCameraPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        myLocationEnabled: true, // Show the current location button on the map
       ),
-      floatingActionButton: FloatingActionButton.extended(
-
-        onPressed: _goToTheLake,
-        label: const Text('이공관으로!'),
-        icon: Image.asset(
-          'images/user_icon.png',
-          width: 30,
-          height: 30,
-        ),
-        backgroundColor: Colors.black54,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            onPressed: () {
+              _goToPosition(initialCameraPosition);
+            },
+            label: const Text('초기 위치'),
+            icon: Icon(Icons.location_on),
+            heroTag: null,
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton.extended(
+            onPressed: () {
+              _goToPosition(currentCameraPosition);
+            },
+            label: const Text('현재 위치'),
+            icon: Icon(Icons.my_location),
+            heroTag: null,
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          height: 50,
+          child: Center(
+            child: Text(
+              '현재 위치로부터의 거리: ${distance.toStringAsFixed(2)} 미터',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Future<void> _goToTheLake() async {
+  Future<void> _goToPosition(CameraPosition cameraPosition) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 }
-/*
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: mappage(),
-    );
-  }
-}
-
-class mappage extends StatefulWidget {
-  @override
-  State<mappage> createState() => MapSampleState();
-}
-
-class MapSampleState extends State<mappage> {
-  Completer<GoogleMapController> _controller = Completer();
-
-  // 초기 카메라 위치
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  // 호수 위치
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex, // 초기 카메라 위치
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-
-      // floatingActionButton을 누르게 되면 _goToTheLake 실행된다.
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
-      ),
-    );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-}
-*/
