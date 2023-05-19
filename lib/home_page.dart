@@ -12,8 +12,10 @@
 import 'package:flutter/material.dart';
 import 'package:stamp_front/course_page.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
+import 'package:stamp_front/repository/course_repository.dart';
 import 'Models/ReadUser.dart';
 import 'Models/Update.dart';
+import 'Models/Course.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -52,16 +54,20 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final authRepository = AuthRepository();
+  final courseRepository = CourseRepository();
 
   late Future<ReadUser> readuser;
   late Future<Update> fetchAlbum;
+  late Future<Course> course;
 
   @override
   void initState() {
     super.initState();
     readuser = authRepository.readUserInfo();
     fetchAlbum  = authRepository.fetchalbum();
+    course = courseRepository.readCourseInfo();
   }
+
 
   /*
   void showPopup(context, title, image, description) {
@@ -209,7 +215,7 @@ class _HomePageState extends State<HomePage> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: titleList.length,
+              itemCount: 0,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
@@ -231,13 +237,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Flexible(
-                              child: Text(
-                                  titleList[index],
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54),
-                                  textAlign: TextAlign.center)
+                              child: FutureBuilder<Course>(
+                                future: course,
+                                builder: (context, snapshot){
+                                  if(snapshot.hasData){
+                                    return Text(snapshot.data!.crsName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54), textAlign: TextAlign.center,);
+                                  }else{
+                                    return Text('');
+                                  }
+                                },
+                              )
                           )
                         ],
                       ),
