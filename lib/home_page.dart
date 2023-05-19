@@ -11,6 +11,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:stamp_front/course_page.dart';
+import 'package:stamp_front/repository/auth_repository.dart';
+import 'Models/ReadUser.dart';
+import 'Models/Update.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -47,6 +50,18 @@ class _HomePageState extends State<HomePage> {
     '- - - -',
     '- - - -'
   ];
+
+  final authRepository = AuthRepository();
+
+  late Future<ReadUser> readuser;
+  late Future<Update> fetchAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    readuser = authRepository.readUserInfo();
+    fetchAlbum  = authRepository.fetchalbum();
+  }
 
   /*
   void showPopup(context, title, image, description) {
@@ -155,8 +170,16 @@ class _HomePageState extends State<HomePage> {
                               width: double.infinity,
                               height: double.infinity,
                               alignment: Alignment.center,
-                              child:
-                              Text('최민성 님', style: TextStyle(fontSize: 20)),
+                                child: FutureBuilder<ReadUser>(
+                                  future: readuser,
+                                  builder: (context, snapshot){
+                                    if(snapshot.hasData){
+                                      return Text(snapshot.data!.username+' 님', style: TextStyle(fontSize: 20));
+                                    }else{
+                                      return Text('');
+                                    }
+                                  },
+                                )
                             ),
                           ),
                           Flexible(
