@@ -54,8 +54,11 @@ class _coursepageState extends State<coursepage> {
                     return AlertDialog(
                       title: Text("댓글 작성", style: TextStyle(color: Color(0xffCDAD5C))),
                       content: Container(
-                        color: Colors.black45,
-
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: '댓글을 작성해주세요.'
+                          ),
+                        ),
                       ),
                       actions: [
                         Container(
