@@ -115,7 +115,7 @@ class _profilepage extends State<profilepage> {
                                       if(snapshot.hasData){
                                         return Text(snapshot.data!.username+' 님', style: TextStyle(fontSize: 20));
                                       }else{
-                                        return Text('줫까세요');
+                                        return Text('');
                                       }
                                     },
                                   )
