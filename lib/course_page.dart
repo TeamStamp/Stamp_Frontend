@@ -44,6 +44,49 @@ class _coursepageState extends State<coursepage> {
           image: AssetImage('images/logo_appbar.png'),
           height: MediaQuery.of(context).size.height/20,
         ),
+        actions : <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              showDialog(context: context,
+                  barrierDismissible: true,
+                  builder: ((context) {
+                    return AlertDialog(
+                      title: Text("댓글 작성", style: TextStyle(color: Color(0xffCDAD5C))),
+                      content: Container(
+                        color: Colors.black45,
+
+                      ),
+                      actions: [
+                        Container(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("취소"),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Color(0xffCDAD5C)
+                              )
+                          ),
+                        ),
+                        Container(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("완료"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xffCDAD5C)
+                            )
+                          ),
+                        )
+                      ],
+                    );
+                  })
+              );
+            },
+          )
+        ]
       ),
       body: Column(
         children: [
