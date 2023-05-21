@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:stamp_front/stamp_page.dart';
 import 'package:stamp_front/profile_page.dart';
 import 'package:stamp_front/home_page.dart';
-import 'package:stamp_front/rank_popup_page.dart';
 
 
 class mainpage extends StatefulWidget {
@@ -28,7 +27,6 @@ class _mainpageState extends State<mainpage> {
     stamppage(),
     HomePage(),
     profilepage(),
-    rankpopuppage()
   ];
 
   void _onItemTapped(int index) {

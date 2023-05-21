@@ -11,7 +11,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:stamp_front/rank_popup_page.dart';
 
 class stamppage extends StatelessWidget {
   const stamppage({Key? key}) : super(key: key);
@@ -136,23 +135,15 @@ class _ListViewPageState extends State<ListViewPage> {
                 child: ListView.separated(
                   itemCount: nameList.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => rankpopuppage()),
-                        );
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(5),
-                          child: Text(
-                              nameList[index],
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54),
-                              textAlign: TextAlign.center)
-                      ),
+                    return Container(
+                        padding: const EdgeInsets.all(5),
+                        child: Text(
+                            nameList[index],
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54),
+                            textAlign: TextAlign.center)
                     );
                   },
                   separatorBuilder: (context, index) => const Divider(
