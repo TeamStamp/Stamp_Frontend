@@ -9,11 +9,11 @@ import '../Models/ReadUser.dart';
 import '../Models/Update.dart';
 
 class AuthRepository {
-  Future<bool> register(String username, String email, String password) async {
+  Future<bool> register(String nickname, String email, String password) async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/register');
     try {
       Response response = await http.post(url,
-          body: jsonEncode({"username": username, "email": email, "password": password}), headers: {
+          body: jsonEncode({"nickname": nickname, "email": email, "password": password}), headers: {
             'Content-Type': 'application/json'
           });
       if(response.statusCode == 200) {
@@ -54,11 +54,29 @@ class AuthRepository {
     return prefs.getString('accessToken') ?? '';
   }
 
-  apiTest() async {
-    var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
+  // apiTest() async {
+  //   var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
+  //   try {
+  //     Response response = await http.get(url, headers: {
+  //       'Authorization': await getToken(),
+  //     });
+  //
+  //     final List<dynamic> data = jsonDecode(response.body);
+  //     List<Post> posts = data.map<Post>((element) {
+  //       return Post.fromJson(element);
+  //     }).toList();
+  //     return posts;
+  //     // List<Post> posts =
+  //   } catch (e){
+  //     print(e);
+  //   }
+  // }
+  Course_List() async {
+    var url = Uri.http('54.215.135.43:8080', 'api/cv/getVCrs');
     try {
       Response response = await http.get(url, headers: {
-        'Authorization': await getToken(),
+        'Content-Type': 'application/json',
+        'x-auth-token': await getToken()
       });
 
       final List<dynamic> data = jsonDecode(response.body);
@@ -99,14 +117,14 @@ class AuthRepository {
       throw Exception('Failed to load album');
     }
   }
-  Future<Update> updatealbum(String username, String password) async {
+  Future<Update> updatealbum(String nickname, String password) async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/update');
     Response response = await http.put(url,
         headers: {
           'Content-Type': 'application/json',
           'x-auth-token': await getToken()
         },
-        body: jsonEncode({"username": username,
+        body: jsonEncode({"nickname": nickname,
                           "password": password
         }));
     if(response.statusCode == 200) {

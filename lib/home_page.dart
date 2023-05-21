@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                                   future: readuser,
                                   builder: (context, snapshot){
                                     if(snapshot.hasData){
-                                      return Text(snapshot.data!.username+' 님', style: TextStyle(fontSize: 20));
+                                      return Text(snapshot.data!.nickname+' 님', style: TextStyle(fontSize: 20));
                                     }else{
                                       return Text('');
                                     }

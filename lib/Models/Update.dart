@@ -1,14 +1,14 @@
 class Update {
   final String email;
-  final String username;
+  final String nickname;
   final String password;
 
-  Update({required this.email, required this.username, required this.password});
+  Update({required this.email, required this.nickname, required this.password});
 
   factory Update.fromJson(Map<String, dynamic> json) {
     return Update(
       email: json['email'],
-      username: json['username'],
+      nickname: json['nickname'],
       password: json['password'],
 
     );

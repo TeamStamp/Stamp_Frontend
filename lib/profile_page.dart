@@ -9,6 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
+import 'Models/Post.dart';
 import 'Models/ReadUser.dart';
 import 'Models/Update.dart';
 
@@ -26,6 +27,8 @@ class _profilepage extends State<profilepage> {
   final passwordController = TextEditingController();
   final newpasswordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
+
+  final List<Post> posts = [];
 
   final List<String> profileplaces = <String>[
     '1번 장소',
@@ -113,7 +116,7 @@ class _profilepage extends State<profilepage> {
                                     future: readuser,
                                     builder: (context, snapshot){
                                       if(snapshot.hasData){
-                                        return Text(snapshot.data!.username+' 님', style: TextStyle(fontSize: 20));
+                                        return Text(snapshot.data!.nickname+' 님', style: TextStyle(fontSize: 20));
                                       }else{
                                         return Text('');
                                       }
@@ -199,7 +202,7 @@ class _profilepage extends State<profilepage> {
                             Expanded(
                               child: ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: profileplaces.length ,
+                                itemCount: posts.length ,
                                 itemBuilder: (BuildContext context, int index) {
                                     return SizedBox(
                                       height: 60,
@@ -209,12 +212,12 @@ class _profilepage extends State<profilepage> {
                                               flex: 3,
                                               child: Padding(
                                                   padding: EdgeInsets.only(left: 10),
-                                                  child: Text('${profileplaces[index ]}'))),
+                                                  child: Text('${posts[index].crsName}'))),
                                           const VerticalDivider(
                                             color: Color(0xffCDAD5C),
                                             thickness: 2,
                                           ),
-                                          Expanded(child: Text('${profileplacestoken[index ]}')),
+                                          Expanded(child: Text('${posts[index].stamp}')),
                                         ],
                                       ),
                                     );
