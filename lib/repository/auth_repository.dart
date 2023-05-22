@@ -4,7 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stamp_front/Models/Post.dart';
+import 'package:stamp_front/Models/Post.dart';
 
+import '../Models/Post.dart';
+import '../Models/Post.dart';
 import '../Models/ReadUser.dart';
 import '../Models/Update.dart';
 
@@ -54,23 +57,23 @@ class AuthRepository {
     return prefs.getString('accessToken') ?? '';
   }
 
-  // apiTest() async {
-  //   var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
-  //   try {
-  //     Response response = await http.get(url, headers: {
-  //       'Authorization': await getToken(),
-  //     });
-  //
-  //     final List<dynamic> data = jsonDecode(response.body);
-  //     List<Post> posts = data.map<Post>((element) {
-  //       return Post.fromJson(element);
-  //     }).toList();
-  //     return posts;
-  //     // List<Post> posts =
-  //   } catch (e){
-  //     print(e);
-  //   }
-  // }
+  apiTest() async {
+    var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
+    try {
+      Response response = await http.get(url, headers: {
+        'Authorization': await getToken(),
+      });
+
+      final List<dynamic> data = jsonDecode(response.body);
+      List<Post> posts = data.map<Post>((element) {
+        return Post.fromJson(element);
+      }).toList();
+      return posts;
+      // List<Post> posts =
+    } catch (e){
+      print(e);
+    }
+  }
   Course_List() async {
     var url = Uri.http('54.215.135.43:8080', 'api/cv/getVCrs');
     try {
@@ -90,20 +93,6 @@ class AuthRepository {
     }
   }
 
-   Future<ReadUser> readUserInfo() async {
-    var url = Uri.http('54.215.135.43:8080', 'api/auth/read');
-      Response response = await http.get(url,
-          headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': await getToken()
-          });
-      if(response.statusCode == 200) {
-        return ReadUser.fromJson(json.decode(response.body)['data']);
-      }else{
-       throw Exception('실패');
-      }
-  }
-
   Future<Update> fetchalbum() async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/read');
     Response response = await http.get(url,
@@ -117,6 +106,7 @@ class AuthRepository {
       throw Exception('Failed to load album');
     }
   }
+
   Future<Update> updatealbum(String nickname, String password) async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/update');
     Response response = await http.put(url,
@@ -152,5 +142,18 @@ class AuthRepository {
   //   print('method end');
   //   return false;
   // }
+  Future<ReadUser> readUserInfo() async {
+    var url = Uri.http('54.215.135.43:8080', 'api/auth/read');
+    Response response = await http.get(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': await getToken()
+        });
+    if(response.statusCode == 200) {
+      return ReadUser.fromJson(json.decode(response.body)['data']);
+    }else{
+      throw Exception('실패');
+    }
+  }
 
 }

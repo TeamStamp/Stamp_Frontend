@@ -12,6 +12,7 @@ import 'package:stamp_front/repository/auth_repository.dart';
 import 'Models/Post.dart';
 import 'Models/ReadUser.dart';
 import 'Models/Update.dart';
+import 'dart:ffi';
 
 class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
@@ -27,8 +28,6 @@ class _profilepage extends State<profilepage> {
   final passwordController = TextEditingController();
   final newpasswordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
-
-  final List<Post> posts = [];
 
   final List<String> profileplaces = <String>[
     '1번 장소',
@@ -48,13 +47,17 @@ class _profilepage extends State<profilepage> {
     '6번 장소 개수',
     '7번 장소 개수'
   ];
-
-
+   final List<Post> posts = [];
    late Future<ReadUser> readuser;
    late Future<Update> fetchAlbum;
+
+  void main() async{
+    posts.addAll(await authRepository.Course_List());
+  }
   @override
   void initState() {
     super.initState();
+    main();
     readuser = authRepository.readUserInfo();
     fetchAlbum  = authRepository.fetchalbum();
   }
@@ -129,8 +132,13 @@ class _profilepage extends State<profilepage> {
                                   width: double.infinity,
                                   height: double.infinity,
                                   alignment: Alignment.center,
-                                  child: Text('270 개',
-                                      style: TextStyle(fontSize: 20)),
+                                  child: FutureBuilder<ReadUser>(
+                                    future: readuser,
+                                    builder: (context, snapshot) {
+                                      return Text(snapshot.data!.stamp.toString()+' 개',
+                                          style: TextStyle(fontSize: 20));
+                                    }
+                                  ),
                                 ),
                               )
                             ],
@@ -202,7 +210,7 @@ class _profilepage extends State<profilepage> {
                             Expanded(
                               child: ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: posts.length ,
+                                itemCount: posts.length,
                                 itemBuilder: (BuildContext context, int index) {
                                     return SizedBox(
                                       height: 60,
@@ -212,12 +220,12 @@ class _profilepage extends State<profilepage> {
                                               flex: 3,
                                               child: Padding(
                                                   padding: EdgeInsets.only(left: 10),
-                                                  child: Text('${posts[index].crsName}'))),
+                                                  child: Text('zz'+posts[index].crsName.toString()))),
                                           const VerticalDivider(
                                             color: Color(0xffCDAD5C),
                                             thickness: 2,
                                           ),
-                                          Expanded(child: Text('${posts[index].stamp}')),
+                                          Expanded(child: Text('zz'+posts[index].stamp.toString())),
                                         ],
                                       ),
                                     );

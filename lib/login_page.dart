@@ -51,7 +51,6 @@ class _loginpageState extends State<loginpage> {
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
-  final List<Post> posts = [];
 
   late String _id;
   late String _password;
