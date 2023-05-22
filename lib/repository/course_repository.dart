@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/Course.dart';
 
 class CourseRepository {
-  Future<Course> readCourseInfo() async {
+  Future<List<Course>> readCourseInfo() async {
     var url = Uri.http('54.215.135.43:8080', 'api/courses');
     Response response = await http.get(url,
         headers: {
@@ -15,7 +15,9 @@ class CourseRepository {
           'x-auth-token': await getToken()
         });
     if(response.statusCode == 200) {
-      return Course.fromJson(json.decode(response.body));
+      var data = json.decode(response.body) as List;
+      List<Course> courses = data.map((item) => Course.fromJson(item)).toList();
+      return courses;
     }
     else {
       throw Exception('실패');

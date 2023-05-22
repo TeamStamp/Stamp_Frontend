@@ -58,13 +58,13 @@ class _HomePageState extends State<HomePage> {
 
   late Future<ReadUser> readuser;
   late Future<Update> fetchAlbum;
-  late Future<Course> course;
+  late Future<List<Course>> course;
 
   @override
   void initState() {
     super.initState();
     readuser = authRepository.readUserInfo();
-    fetchAlbum  = authRepository.fetchalbum();
+    fetchAlbum = authRepository.fetchalbum();
     course = courseRepository.readCourseInfo();
   }
 
@@ -215,13 +215,13 @@ class _HomePageState extends State<HomePage> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: 0,
+              itemCount: imageList.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => coursepage()),
+                      MaterialPageRoute(  builder: (context) => coursepage()),
                     );
                   },
                   child: Card(
@@ -237,13 +237,17 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Flexible(
-                              child: FutureBuilder<Course>(
+                              child: FutureBuilder<List<Course>>(
                                 future: course,
                                 builder: (context, snapshot){
                                   if(snapshot.hasData){
-                                    return Text(snapshot.data!.crsName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54), textAlign: TextAlign.center,);
-                                  }else{
-                                    return Text('');
+                                    return Text(snapshot.data![index].crsName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54), textAlign: TextAlign.center,);
+                                  }
+                                  else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
+                                  else {
+                                    return CircularProgressIndicator();
                                   }
                                 },
                               )

@@ -146,7 +146,7 @@ class AuthRepository {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/read');
     Response response = await http.get(url,
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
           'x-auth-token': await getToken()
         });
     if(response.statusCode == 200) {
