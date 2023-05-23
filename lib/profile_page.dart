@@ -123,7 +123,7 @@ class _profilepage extends State<profilepage> {
                                       if(snapshot.hasData){
                                         return Text(snapshot.data!.nickname+' 님', style: TextStyle(fontSize: 20));
                                       }else{
-                                        return Text('');
+                                        return CircularProgressIndicator();
                                       }
                                     },
                                   )
@@ -137,8 +137,12 @@ class _profilepage extends State<profilepage> {
                                   child: FutureBuilder<ReadUser>(
                                     future: readuser,
                                     builder: (context, snapshot) {
+                                      if(snapshot.hasData){
                                       return Text(snapshot.data!.stamp.toString()+' 개',
-                                          style: TextStyle(fontSize: 20));
+                                          style: TextStyle(fontSize: 20));}
+                                      else{
+                                        return CircularProgressIndicator();
+                                      }
                                     }
                                   ),
                                 ),
