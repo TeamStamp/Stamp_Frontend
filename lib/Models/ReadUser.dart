@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:convert';
 
 class ReadUser {
   final String email;

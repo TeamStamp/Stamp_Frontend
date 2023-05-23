@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Course {
   final String imgUrl;
   final String crsName;

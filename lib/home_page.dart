@@ -26,31 +26,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var titleList = [
-    '강남대학교 코스',
-    '청계천 코스',
-    '전주 한옥마을 코스',
-    '여수밤바다 코스',
-    '거제도 해변 코스',
-    '대전 엑스포 코스'
-  ];
-
   var imageList = [
     'images/place1.jpg',
     'images/place2.jpg',
     'images/place3.jpg',
     'images/place4.jpg',
-    'images/place5.jpg',
-    'images/place6.png'
-  ];
-
-  var description = [
-    '- - - -',
-    '- - - -',
-    '- - - -',
-    '- - - -',
-    '- - - -',
-    '- - - -'
+    'images/place5.jpg'
   ];
 
   final authRepository = AuthRepository();
@@ -193,8 +174,13 @@ class _HomePageState extends State<HomePage> {
                               width: double.infinity,
                               height: double.infinity,
                               alignment: Alignment.center,
-                              child:
-                              Text('270 개', style: TextStyle(fontSize: 20)),
+                              child: FutureBuilder<ReadUser>(
+                                  future: readuser,
+                                  builder: (context, snapshot) {
+                                    return Text(snapshot.data!.stamp.toString()+' 개',
+                                        style: TextStyle(fontSize: 20));
+                                  }
+                              ),
                             ),
                           )
                         ],
@@ -215,7 +201,7 @@ class _HomePageState extends State<HomePage> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: imageList.length,
+              itemCount: 5,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
@@ -231,9 +217,30 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Flexible(
                             child: Container(
-                              child: Image.asset(imageList[index]),
                               width: MediaQuery.of(context).size.width*0.8,
                               height: MediaQuery.of(context).size.height*0.8,
+                                child: FutureBuilder<List<Course>>(
+                                  future: course,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      final courses = snapshot.data;
+                                      final course = courses![index];
+                                      if (course.imgUrl != null && course.imgUrl.isNotEmpty) {
+                                        return Image.network(
+                                          course.imgUrl!,
+                                          width: MediaQuery.of(context).size.width * 0.8,
+                                          height: MediaQuery.of(context).size.height * 0.8,
+                                        );
+                                      } else {
+                                        return Text('No Image');
+                                      }
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      return CircularProgressIndicator();
+                                    }
+                                  },
+                                )
                             ),
                           ),
                           Flexible(

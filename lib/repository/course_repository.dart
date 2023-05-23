@@ -15,7 +15,7 @@ class CourseRepository {
           'x-auth-token': await getToken()
         });
     if(response.statusCode == 200) {
-      var data = json.decode(response.body) as List;
+      var data = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<Course> courses = data.map((item) => Course.fromJson(item)).toList();
       return courses;
     }

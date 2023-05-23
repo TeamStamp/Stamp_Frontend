@@ -150,7 +150,7 @@ class AuthRepository {
           'x-auth-token': await getToken()
         });
     if(response.statusCode == 200) {
-      return ReadUser.fromJson(json.decode(response.body)['data']);
+      return ReadUser.fromJson(json.decode(utf8.decode(response.bodyBytes))['data']);
     }else{
       throw Exception('실패');
     }

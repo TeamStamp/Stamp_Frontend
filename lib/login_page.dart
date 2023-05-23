@@ -12,12 +12,26 @@
 */
 
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:stamp_front/Models/Post.dart';
 import 'package:stamp_front/main_page.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
 
 void main() {
   runApp(const StampApp());
+}
+
+class FallbackUtf8Decoder extends Converter<List<int>, String> {
+  const FallbackUtf8Decoder();
+
+  @override
+  String convert(List<int> input) {
+    try {
+      return utf8.decode(input, allowMalformed: true);
+    } catch (e) {
+      return utf8.decode(input, allowMalformed: false);
+    }
+  }
 }
 
 class StampApp extends StatelessWidget {
@@ -82,9 +96,10 @@ class _loginpageState extends State<loginpage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.asset(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  width: MediaQuery.of(context).size.width * 1,
-                  'images/logo_main.png'),
+                'images/logo_main.png',
+                height: MediaQuery.of(context).size.height * 0.5,
+                width: MediaQuery.of(context).size.width * 1,
+              ),
               Container(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.15,
