@@ -1,15 +1,17 @@
+import 'dart:ffi';
+
 class Post {
-  final String crsId;
+  final int crsId;
   final String crsName;
-  final String stamp;
+  final int stamp;
 
   Post({required this.crsId, required this.crsName, required this.stamp});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      crsId: json['crsId'],
-      crsName: json['crsName'],
-      stamp: json['stamp'],
+      crsId: json['crsId'] as int,
+      crsName: json['crsName'] as String,
+      stamp: json['stamp'] as int,
     );
   }
 }

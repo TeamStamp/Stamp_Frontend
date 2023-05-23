@@ -7,6 +7,7 @@
 
 */
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
 import 'Models/Post.dart';
@@ -47,17 +48,18 @@ class _profilepage extends State<profilepage> {
     '6번 장소 개수',
     '7번 장소 개수'
   ];
-   final List<Post> posts = [];
+
+
    late Future<ReadUser> readuser;
    late Future<Update> fetchAlbum;
+   late Future<List<Post>> post;
 
-  void main() async{
-    posts.addAll(await authRepository.Course_List());
-  }
+
   @override
   void initState() {
     super.initState();
-    main();
+
+    post = authRepository.Course_List();
     readuser = authRepository.readUserInfo();
     fetchAlbum  = authRepository.fetchalbum();
   }
@@ -208,36 +210,53 @@ class _profilepage extends State<profilepage> {
                               height: 0,
                             ),
                             Expanded(
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                itemCount: posts.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                    return SizedBox(
-                                      height: 60,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                              flex: 3,
-                                              child: Padding(
-                                                  padding: EdgeInsets.only(left: 10),
-                                                  child: Text('zz'+posts[index].crsName.toString()))),
-                                          const VerticalDivider(
-                                            color: Color(0xffCDAD5C),
-                                            thickness: 2,
+                              child: FutureBuilder<List<Post>>(
+                                future: post,
+                                builder: (context, snapshot) {
+                                  if(snapshot.hasData) {
+                                    return ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index) {
+                                        return SizedBox(
+                                          height: 60,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 10),
+                                                      child: Text('${snapshot.data![index].crsName}'))),
+                                              const VerticalDivider(
+                                                color: Color(0xffCDAD5C),
+                                                thickness: 2,
+                                              ),
+                                              Expanded(child: Padding(
+                                                padding: EdgeInsets.only(left: 5),
+                                                  child: Text('${snapshot.data![index].stamp}'))),
+                                            ],
                                           ),
-                                          Expanded(child: Text('zz'+posts[index].stamp.toString())),
-                                        ],
+                                        );
+                                      },
+                                      separatorBuilder: (BuildContext context,
+                                          int index) =>
+                                      const Divider(
+                                        color: Color(0xffCDAD5C),
+                                        thickness: 2,
+                                        height: 0,
                                       ),
                                     );
-                                },
-                                separatorBuilder: (BuildContext context, int index) =>
-                                    const Divider(
-                                  color: Color(0xffCDAD5C),
-                                  thickness: 2,
-                                      height: 0,
-                                ),
+                                  }else if(snapshot.hasError){
+                                    return Text('error');
+                                  }else{
+                                    return CircularProgressIndicator();
+                                  }
+                                }
+                              )
                               ),
-                            ),
+
                           ],
                         )),
                   ),

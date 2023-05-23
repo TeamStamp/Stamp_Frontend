@@ -57,40 +57,49 @@ class AuthRepository {
     return prefs.getString('accessToken') ?? '';
   }
 
-  apiTest() async {
-    var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
-    try {
-      Response response = await http.get(url, headers: {
-        'Authorization': await getToken(),
-      });
 
-      final List<dynamic> data = jsonDecode(response.body);
-      List<Post> posts = data.map<Post>((element) {
-        return Post.fromJson(element);
-      }).toList();
-      return posts;
-      // List<Post> posts =
-    } catch (e){
-      print(e);
-    }
-  }
-  Course_List() async {
+  // apiTest() async {
+  //   var url = Uri.https('jsonplaceholder.typicode.com', 'todos');
+  //   try {
+  //     Response response = await http.get(url, headers: {
+  //       'Authorization': await getToken(),
+  //     });
+  //
+  //     final List<dynamic> data = jsonDecode(response.body);
+  //     List<Post> posts = data.map<Post>((element) {
+  //       return Post.fromJson(element);
+  //     }).toList();
+  //     return posts;
+  //     // List<Post> posts =
+  //   } catch (e){
+  //     print(e);
+  //   }
+  // }
+  Future<List<Post>> Course_List() async {
     var url = Uri.http('54.215.135.43:8080', 'api/cv/getVCrs');
-    try {
+
       Response response = await http.get(url, headers: {
         'Content-Type': 'application/json',
         'x-auth-token': await getToken()
       });
+        if(response.statusCode == 200) {
+          //print(json.decode(utf8.decode(response.bodyBytes))['data']);
+        var data = (json.decode(utf8.decode(response.bodyBytes))['data']);
+          //print(data != null ? data['data'] : 'Data is null');
+        print(data);
+        List<Post> posts = [];
 
-      final List<dynamic> data = jsonDecode(response.body);
-      List<Post> posts = data.map<Post>((element) {
-        return Post.fromJson(element);
-      }).toList();
-      return posts;
-      // List<Post> posts =
-    } catch (e){
-      print(e);
-    }
+        for (var item in data) {
+          Post post = Post.fromJson(item as Map<String, dynamic>);
+          posts.add(post);
+        }
+
+        print(posts);
+        return posts;
+      }
+      else {
+        throw Exception('실패');
+      }
   }
 
   Future<Update> fetchalbum() async {
