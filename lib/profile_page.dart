@@ -129,6 +129,7 @@ class _profilepage extends State<profilepage> {
                                   )
                                 ),
                               ),
+
                               Flexible(
                                 child: Container(
                                   width: double.infinity,
@@ -264,6 +265,7 @@ class _profilepage extends State<profilepage> {
                           ],
                         )),
                   ),
+
                 ],
               ),
             ),
@@ -468,6 +470,7 @@ class _profilepage extends State<profilepage> {
                                               Radius.circular(20.0)),
                                           borderSide: BorderSide(
                                               width: 1, color: Colors.blue))),
+                                  obscureText: true,
                                 ),
                               )
                             ],
