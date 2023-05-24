@@ -170,6 +170,7 @@ class MapSampleState extends State<mappage> {
     );
   }
 
+
   Future<void> _goToPosition(CameraPosition cameraPosition) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
