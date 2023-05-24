@@ -8,7 +8,8 @@ class mappage extends StatefulWidget {
   final double latitude;
   final double longitude;
 
-  const mappage({Key? key, required this.latitude, required this.longitude}) : super(key: key);
+  const mappage({Key? key, required this.latitude, required this.longitude})
+      : super(key: key);
 
   @override
   State<mappage> createState() => MapSampleState();
@@ -19,6 +20,7 @@ class MapSampleState extends State<mappage> {
   Completer<GoogleMapController>();
   LocationData? _currentLocation;
   Location location = Location();
+  bool showStamp = false;
 
   @override
   void initState() {
@@ -51,6 +53,39 @@ class MapSampleState extends State<mappage> {
     setState(() {
       _currentLocation = _locationData;
     });
+
+    // Check if the distance is less than 100 meters
+    if (_currentLocation != null &&
+        Geolocator.distanceBetween(
+            widget.latitude,
+            widget.longitude,
+            _currentLocation!.latitude!,
+            _currentLocation!.longitude!) <
+            10000) {
+      _showConfirmationDialog();
+    }
+  }
+
+  Future<void> _showConfirmationDialog() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('확인 되었습니다!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  showStamp = true;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -62,7 +97,8 @@ class MapSampleState extends State<mappage> {
 
     CameraPosition currentCameraPosition = _currentLocation != null
         ? CameraPosition(
-      target: LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!),
+      target: LatLng(
+          _currentLocation!.latitude!, _currentLocation!.longitude!),
       zoom: 14.4746,
     )
         : initialCameraPosition;
@@ -77,13 +113,25 @@ class MapSampleState extends State<mappage> {
         : 0;
 
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: initialCameraPosition,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        myLocationEnabled: true, // Show the current location button on the map
+      body: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: initialCameraPosition,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            myLocationEnabled: true, // Show the current location button on the map
+          ),
+          if (showStamp)
+            Center(
+              child: Image.asset(
+                'images/place1.jpg', // Replace with the actual path to your image
+                width: 500,
+                height: 500,
+              ),
+            ),
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
