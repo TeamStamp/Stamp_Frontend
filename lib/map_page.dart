@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'test.dart'; // test.dart 파일을 import합니다.
 
 class mappage extends StatefulWidget {
   final double latitude;
@@ -153,6 +154,19 @@ class MapSampleState extends State<mappage> {
             icon: Icon(Icons.my_location),
             heroTag: null,
           ),
+          SizedBox(height: 16),
+          FloatingActionButton.extended(
+            onPressed: () {
+              // Navigate to the test page when the button is pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TestPage()),
+              );
+            },
+            label: const Text('테스트 페이지로 이동'),
+            icon: Icon(Icons.navigate_next),
+            heroTag: null,
+          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
@@ -169,7 +183,6 @@ class MapSampleState extends State<mappage> {
       ),
     );
   }
-
 
   Future<void> _goToPosition(CameraPosition cameraPosition) async {
     final GoogleMapController controller = await _controller.future;
