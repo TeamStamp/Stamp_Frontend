@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stamp_front/Models/Post.dart';
 import 'package:stamp_front/Models/Post.dart';
@@ -75,6 +77,30 @@ class AuthRepository {
   //     print(e);
   //   }
   // }
+
+  Future<void> uploadImage(File imageFile) async {
+    // final picker = ImagePicker();
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (imageFile != null) {
+      final url = 'http://54.215.135.43:8080/api/auth/uploadImg';
+      final token = await getToken();
+
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.headers['x-auth-token'] = token;
+      request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('이미지 업로드 성공');
+      } else {
+        print('이미지 업로드 실패');
+      }
+    } else {
+      print('이미지 파일을 선택하지 않았습니다.');
+    }
+  }
   Future<List<Post>> Course_List() async {
     var url = Uri.http('54.215.135.43:8080', 'api/cv/getVCrs');
 
@@ -86,7 +112,6 @@ class AuthRepository {
           //print(json.decode(utf8.decode(response.bodyBytes))['data']);
         var data = (json.decode(utf8.decode(response.bodyBytes))['data']);
           //print(data != null ? data['data'] : 'Data is null');
-        print(data);
         List<Post> posts = [];
 
         for (var item in data) {
@@ -101,7 +126,6 @@ class AuthRepository {
         throw Exception('실패');
       }
   }
-
   Future<Update> fetchalbum() async {
     var url = Uri.http('54.215.135.43:8080', 'api/auth/read');
     Response response = await http.get(url,
@@ -109,6 +133,8 @@ class AuthRepository {
           'Content-Type': 'application/json',
           'x-auth-token': await getToken()
         });
+    var data1 = (json.decode(utf8.decode(response.bodyBytes))['data']);
+    print(data1);
     if (response.statusCode == 200) {
       return Update.fromJson(jsonDecode(response.body)['data']);
     } else {
@@ -166,3 +192,4 @@ class AuthRepository {
   }
 
 }
+

@@ -9,7 +9,7 @@ class Update {
     return Update(
       email: json['email'],
       nickname: json['nickname'],
-      password: json['password'],
+      password: json['password']
 
     );
   }

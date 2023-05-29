@@ -6,7 +6,9 @@
   -
 
 */
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stamp_front/repository/auth_repository.dart';
@@ -14,6 +16,7 @@ import 'Models/Post.dart';
 import 'Models/ReadUser.dart';
 import 'Models/Update.dart';
 import 'dart:ffi';
+import 'package:image_picker/image_picker.dart';
 
 class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
@@ -21,6 +24,7 @@ class profilepage extends StatefulWidget {
   @override
   State<profilepage> createState() => _profilepage();
 }
+
 
 class _profilepage extends State<profilepage> {
   final authRepository = AuthRepository();
@@ -30,38 +34,36 @@ class _profilepage extends State<profilepage> {
   final newpasswordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
-  final List<String> profileplaces = <String>[
-    '1번 장소',
-    '2번 장소',
-    '3번 장소',
-    '4번 장소',
-    '5번 장소',
-    '6번 장소',
-    '7번 장소'
-  ];
-  final List<String> profileplacestoken = <String>[
-    '1번 장소 개수',
-    '2번 장소 개수',
-    '3번 장소 개수',
-    '4번 장소 개수',
-    '5번 장소 개수',
-    '6번 장소 개수',
-    '7번 장소 개수'
-  ];
-
-
    late Future<ReadUser> readuser;
    late Future<Update> fetchAlbum;
    late Future<List<Post>> post;
-
-
+  var A = '비밀번호 불일치';
   @override
   void initState() {
     super.initState();
-
     post = authRepository.Course_List();
     readuser = authRepository.readUserInfo();
     fetchAlbum  = authRepository.fetchalbum();
+  }
+  Future<File?> getImageFileFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    } else {
+      return null;
+    }
+  }
+  void handleUploadButton() async {
+    File? imageFile = await getImageFileFromGallery();
+
+    if (imageFile != null) {
+      await authRepository.uploadImage(imageFile);
+      print('이미지 업로드 완료');
+    } else {
+      print('이미지 파일을 선택하지 않았습니다.');
+    }
   }
 
   @override
@@ -94,10 +96,20 @@ class _profilepage extends State<profilepage> {
                           child: Container(
                             width: double.infinity,
                             height: double.infinity,
-                            margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
-                            child: Image(
-                              image: AssetImage('images/user_icon.png'),
-                            ),
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: FutureBuilder<ReadUser>(
+                              future: readuser,
+                              builder: (context, snapshot){
+                                if(snapshot.hasData){
+                                  return Image.network(snapshot.data!.imgUrl);
+                                }else{
+                                  return IconButton(
+                                      icon: Icon(Icons.upload),
+                                      onPressed: handleUploadButton
+                                  );
+                                }
+                              },
+                            )
                           ),
                         ),
                       ),
@@ -199,13 +211,15 @@ class _profilepage extends State<profilepage> {
                               Expanded(
                                   flex: 3,
                                   child: Padding(
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: EdgeInsets.only(left: 15),
                                       child: Text('코스'))),
                               VerticalDivider(
                                 color: Color(0xffCDAD5C),
                                 thickness: 2,
                               ),
-                              Expanded(child: Text('개수')),
+                              Expanded(child: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                  child: Text('개수'))),
                             ],
                           ),
                         ),
@@ -232,15 +246,15 @@ class _profilepage extends State<profilepage> {
                                                   flex: 3,
                                                   child: Padding(
                                                       padding: EdgeInsets.only(
-                                                          left: 10),
+                                                          left: 15),
                                                       child: Text('${snapshot.data![index].crsName}'))),
                                               const VerticalDivider(
                                                 color: Color(0xffCDAD5C),
                                                 thickness: 2,
                                               ),
                                               Expanded(child: Padding(
-                                                padding: EdgeInsets.only(left: 5),
-                                                  child: Text('${snapshot.data![index].stamp}'))),
+                                                padding: EdgeInsets.only(left: 10),
+                                                  child: Text('${snapshot.data![index].stamp} 개'))),
                                             ],
                                           ),
                                         );
@@ -370,10 +384,11 @@ class _profilepage extends State<profilepage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return '값을 입력해주세요';
-                                    }else if(newpasswordController!=snapshot.data!.password){
-                                      return '기존 비밀번호가 맞지 않습니다';
+                                    }else if(snapshot.data!.password != passwordController.text){
+                                      return '비밀번호가 맞지 않습니다';
+                                    }else{
+                                      return null;
                                     }
-                                    return null;
                                   },
                                   textAlign: TextAlign.left,
                                   decoration: const InputDecoration(
@@ -411,7 +426,7 @@ class _profilepage extends State<profilepage> {
                                 child: TextFormField(
                                   controller: newpasswordController,
                                   validator: (value) =>
-                                  value!.isEmpty ? 'PASSWORD를 입력해 주세요!' : null,
+                                  value!.isEmpty ? '새로운 비밀번호를 입력해 주세요!' : null,
                                   textAlign: TextAlign.left,
                                   decoration: const InputDecoration(
                                       contentPadding:
@@ -450,10 +465,11 @@ class _profilepage extends State<profilepage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return '값을 입력해주세요';
-                                    }else if(newpasswordController!=passwordConfirmController){
-                                      return '비밀번호가 맞지 않습니다';
+                                    }else if(newpasswordController.text != passwordConfirmController.text){
+                                      return '비밀번호가 일치하지 않습니다.';
+                                    }else{
+                                      return null;
                                     }
-                                    return null;
                                   },
                                   textAlign: TextAlign.left,
                                   decoration: const InputDecoration(
@@ -488,10 +504,17 @@ class _profilepage extends State<profilepage> {
                       child:  ElevatedButton(
                                 onPressed: () {
                                 setState(() {
-                                    fetchAlbum = authRepository.updatealbum(
-                                        usernameController.text,
-                                        newpasswordController.text);
-                                    Navigator.pop(context);
+                                    if(profileformKey.currentState!.validate()){
+                                      if(newpasswordController.text == passwordConfirmController.text){
+                                        fetchAlbum = authRepository.updatealbum(
+                                            usernameController.text,
+                                            newpasswordController.text);
+                                        A = '';
+                                        Navigator.pop(context);
+                                      }else{
+                                        A = '비밀번호 불일치';
+                                      }
+                                    }
                                 });
                                   },
                                 style: ElevatedButton.styleFrom(
