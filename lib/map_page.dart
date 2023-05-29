@@ -4,7 +4,6 @@ import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:stamp_front/repository/map_repository.dart';
-import 'test.dart'; // test.dart 파일을 import합니다.
 
 class mappage extends StatefulWidget {
   final double latitude;
