@@ -8,8 +8,9 @@ import 'package:stamp_front/repository/map_repository.dart';
 class mappage extends StatefulWidget {
   final double latitude;
   final double longitude;
+  final int plcId;
 
-  const mappage({Key? key, required this.latitude, required this.longitude})
+  const mappage({Key? key, required this.latitude, required this.longitude, required this.plcId})
       : super(key: key);
 
   @override
@@ -21,7 +22,6 @@ class MapSampleState extends State<mappage> {
   Completer<GoogleMapController>();
   LocationData? _currentLocation;
   Location location = Location();
-  bool showStamp = false;
   final MapRepository mapRepository = MapRepository();
 
   @override
@@ -55,17 +55,6 @@ class MapSampleState extends State<mappage> {
     setState(() {
       _currentLocation = _locationData;
     });
-
-    // Check if the distance is less than 100 meters
-    if (_currentLocation != null &&
-        Geolocator.distanceBetween(
-            widget.latitude,
-            widget.longitude,
-            _currentLocation!.latitude!,
-            _currentLocation!.longitude!) <
-            10000) {
-      _showConfirmationDialog();
-    }
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -77,9 +66,6 @@ class MapSampleState extends State<mappage> {
           actions: [
             TextButton(
               onPressed: () {
-                setState(() {
-                  showStamp = true;
-                });
                 Navigator.of(context).pop();
               },
               child: Text('확인'),
@@ -94,14 +80,14 @@ class MapSampleState extends State<mappage> {
   Widget build(BuildContext context) {
     CameraPosition initialCameraPosition = CameraPosition(
       target: LatLng(widget.latitude, widget.longitude),
-      zoom: 14.4746,
+      zoom: 17,
     );
 
     CameraPosition currentCameraPosition = _currentLocation != null
         ? CameraPosition(
       target: LatLng(
           _currentLocation!.latitude!, _currentLocation!.longitude!),
-      zoom: 14.4746,
+      zoom: 17,
     )
         : initialCameraPosition;
 
@@ -125,18 +111,11 @@ class MapSampleState extends State<mappage> {
             },
             myLocationEnabled: true, // Show the current location button on the map
           ),
-          if (showStamp)
-            Center(
-              child: Image.asset(
-                'images/place1.jpg', // Replace with the actual path to your image
-                width: 500,
-                height: 500,
-              ),
-            ),
         ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FloatingActionButton.extended(
             onPressed: () {
@@ -144,27 +123,31 @@ class MapSampleState extends State<mappage> {
             },
             label: const Text('초기 위치'),
             icon: Icon(Icons.location_on),
+            backgroundColor: Color(0xFFF6BC53),
+            foregroundColor: Colors.black,
             heroTag: null,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 15),
           FloatingActionButton.extended(
             onPressed: () {
-              _goToPosition(currentCameraPosition);
-            },
-            label: const Text('현재 위치'),
-            icon: Icon(Icons.my_location),
-            heroTag: null,
-          ),
-          SizedBox(height: 16),
-          FloatingActionButton.extended(
-            onPressed: () {
-              int crsId=9;
-              int plcId=4;
-              bool visited=true;
-              updateServerData(crsId,plcId,visited);
+              // Check if the distance is less than 100 meters
+              if (_currentLocation != null &&
+                  Geolocator.distanceBetween(
+                      widget.latitude,
+                      widget.longitude,
+                      _currentLocation!.latitude!,
+                      _currentLocation!.longitude!) <
+                      10000) {
+                _showConfirmationDialog();
+                int crsId=9;
+                bool visited=true;
+                updateServerData(crsId,widget.plcId,visited);
+              }
             },
             label: const Text('Update Server Data'),
             icon: Icon(Icons.update),
+            backgroundColor: Color(0xFFF6BC53),
+            foregroundColor: Colors.black,
             heroTag: null,
           ),
         ],
@@ -172,10 +155,11 @@ class MapSampleState extends State<mappage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          height: 50,
+          color: Color(0xFFF6BC53),
+          height: 40,
           child: Center(
             child: Text(
-              '현재 위치로부터의 거리: ${distance.toStringAsFixed(2)} 미터',
+              '현재 위치로부터의 거리: ${distance.toStringAsFixed(2)}  미터',
               style: TextStyle(fontSize: 18),
             ),
           ),

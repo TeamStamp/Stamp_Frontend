@@ -24,6 +24,7 @@ class _coursepageState extends State<coursepage> {
   final List<String> comment = <String> ['댓글 1', '댓글 2', '댓글 3'];
 
   int _selectedIndex = 1;
+  var num=1;
 
   final List<Widget> _widgetOptions = <Widget>[
     stamppage(),
@@ -68,10 +69,10 @@ class _coursepageState extends State<coursepage> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text("취소"),
                               style: ElevatedButton.styleFrom(
                                   primary: Color(0xffCDAD5C)
-                              )
+                              ),
+                            child: Text("취소")
                           ),
                         ),
                         Container(
@@ -79,10 +80,10 @@ class _coursepageState extends State<coursepage> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text("완료"),
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xffCDAD5C)
-                            )
+                            ),
+                            child: Text("완료")
                           ),
                         )
                       ],
@@ -97,6 +98,7 @@ class _coursepageState extends State<coursepage> {
         children: [
           // 앱바 바로 밑에 위치한 카카오지하철 느낌의 로고
           Flexible(
+            flex: 2,
             child: Container(
               margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
               width: MediaQuery.of(context).size.width,
@@ -115,9 +117,9 @@ class _coursepageState extends State<coursepage> {
                 ],
               ),
             ),
-            flex: 2,
           ),
           Flexible(
+              flex: 5,
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: MediaQuery.of(context).size.width,
@@ -137,18 +139,68 @@ class _coursepageState extends State<coursepage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(15, 0, 5, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(35),
-                            border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('images/place1.jpg')
-                            )
-                          ),
+                      InkWell(//ink0
+                        child: FutureBuilder<Crsid>(
+                          future: crsidData,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.plcList[num].imgUrl != null) {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: 70,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(snapshot.data!.plcList[0].imgUrl),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage('images/user_icon.png'),
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: Text("Error"),
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         onTap: () {
                           Navigator.push(
@@ -160,10 +212,11 @@ class _coursepageState extends State<coursepage> {
                                   if (snapshot.hasData) {
                                     double latitude = double.parse(snapshot.data!.plcList[0].lat);
                                     double longitude = double.parse(snapshot.data!.plcList[0].lng);
+                                    int plcId = (snapshot.data!.plcList[0].id);
                                     print(latitude);
                                     print(longitude);
                                     // 예시로 초기값 설정
-                                    return mappage(latitude: latitude, longitude: longitude);
+                                    return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
                                   } else if (snapshot.hasError) {
                                     return Text("Error");
                                   } else {
@@ -174,129 +227,464 @@ class _coursepageState extends State<coursepage> {
                             ),
                           );
                         },
-                      ),
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/place2.jpg')
-                              )
-                          ),
+                      ), //ink0
+                      InkWell(//ink1
+
+                        child: FutureBuilder<Crsid>(
+                          future: crsidData,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.plcList[1].imgUrl != null) {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: 70,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(snapshot.data!.plcList[1].imgUrl),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage('images/user_icon.png'),
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: Text("Error"),
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         onTap: () {
-                          double latitude = 37.5682;
-                          double longitude = 126.9784;
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                              )
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FutureBuilder<Crsid>(
+                                future: crsidData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    double latitude = double.parse(snapshot.data!.plcList[1].lat);
+                                    double longitude = double.parse(snapshot.data!.plcList[1].lng);
+                                    int plcId = (snapshot.data!.plcList[1].id);
+                                    print(latitude);
+                                    print(longitude);
+                                    // 예시로 초기값 설정
+                                    return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
+                                  } else if (snapshot.hasError) {
+                                    return Text("Error");
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                            ),
                           );
                         },
-                      ),
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/place3.jpg')
-                              )
-                          ),
+                      ), //ink1
+                      InkWell(//ink2
+
+                        child: FutureBuilder<Crsid>(
+                          future: crsidData,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.plcList[2].imgUrl != null) {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: 70,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(snapshot.data!.plcList[2].imgUrl),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage('images/user_icon.png'),
+                                    ),
+                                  ),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: Text("Error"),
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                                ),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         onTap: () {
-                          double latitude = 40.7128;
-                          double longitude = -74.0060;
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                              )
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FutureBuilder<Crsid>(
+                                future: crsidData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    double latitude = double.parse(snapshot.data!.plcList[2].lat);
+                                    double longitude = double.parse(snapshot.data!.plcList[2].lng);
+                                    int plcId = (snapshot.data!.plcList[num].id);
+                                    print(latitude);
+                                    print(longitude);
+                                    // 예시로 초기값 설정
+                                    return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
+                                  } else if (snapshot.hasError) {
+                                    return Text("Error");
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                            ),
                           );
                         },
-                      ),
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/place4.jpg')
-                              )
-                          ),
-                        ),
-                        onTap: () {
-                          double latitude = 40.7128;
-                          double longitude = -74.0060;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                              )
-                          );
-                        },
-                      ),
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/place5.jpg')
-                              )
-                          ),
-                        ),
-                        onTap: () {
-                          double latitude = 40.7128;
-                          double longitude = -74.0060;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                              )
-                          );
-                        },
-                      ),
-                      InkWell(
-                        child:  Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 15, 0),
-                          width: 70,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border: Border.all(color: Color(0xffCDAD5C), width: 2),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('images/place6.png')
-                              )
-                          ),
-                        ),
-                        onTap: () {
-                          double latitude = 40.7128;
-                          double longitude = -74.0060;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                              )
-                          );
-                        },
-                      ),
+                      ), //ink2
+                      // InkWell(//ink2
+                      //
+                      //   child: FutureBuilder<Crsid>(
+                      //     future: crsidData,
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.hasData) {
+                      //         if (snapshot.data!.plcList[3].imgUrl != null) {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: 70,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: NetworkImage(snapshot.data!.plcList[3].imgUrl),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         } else {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: MediaQuery.of(context).size.width,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: AssetImage('images/user_icon.png'),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }
+                      //       } else if (snapshot.hasError) {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: Text("Error"),
+                      //           ),
+                      //         );
+                      //       } else {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: CircularProgressIndicator(),
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => FutureBuilder<Crsid>(
+                      //           future: crsidData,
+                      //           builder: (context, snapshot) {
+                      //             if (snapshot.hasData) {
+                      //               double latitude = double.parse(snapshot.data!.plcList[3].lat);
+                      //               double longitude = double.parse(snapshot.data!.plcList[3].lng);
+                      //               int plcId = (snapshot.data!.plcList[num].id);
+                      //               print(latitude);
+                      //               print(longitude);
+                      //               // 예시로 초기값 설정
+                      //               return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
+                      //             } else if (snapshot.hasError) {
+                      //               return Text("Error");
+                      //             } else {
+                      //               return CircularProgressIndicator();
+                      //             }
+                      //           },
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ), //ink3
+                      // InkWell(//ink4
+                      //
+                      //   child: FutureBuilder<Crsid>(
+                      //     future: crsidData,
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.hasData) {
+                      //         if (snapshot.data!.plcList[4].imgUrl != null) {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: 70,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: NetworkImage(snapshot.data!.plcList[4].imgUrl),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         } else {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: MediaQuery.of(context).size.width,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: AssetImage('images/user_icon.png'),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }
+                      //       } else if (snapshot.hasError) {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: Text("Error"),
+                      //           ),
+                      //         );
+                      //       } else {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: CircularProgressIndicator(),
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => FutureBuilder<Crsid>(
+                      //           future: crsidData,
+                      //           builder: (context, snapshot) {
+                      //             if (snapshot.hasData) {
+                      //               double latitude = double.parse(snapshot.data!.plcList[4].lat);
+                      //               double longitude = double.parse(snapshot.data!.plcList[4].lng);
+                      //               int plcId = (snapshot.data!.plcList[num].id);
+                      //               print(latitude);
+                      //               print(longitude);
+                      //               // 예시로 초기값 설정
+                      //               return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
+                      //             } else if (snapshot.hasError) {
+                      //               return Text("Error");
+                      //             } else {
+                      //               return CircularProgressIndicator();
+                      //             }
+                      //           },
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ), //ink4
+                      // InkWell(//ink5
+                      //
+                      //   child: FutureBuilder<Crsid>(
+                      //     future: crsidData,
+                      //     builder: (context, snapshot) {
+                      //       if (snapshot.hasData) {
+                      //         if (snapshot.data!.plcList[5].imgUrl != null) {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: 70,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: NetworkImage(snapshot.data!.plcList[5].imgUrl),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         } else {
+                      //           return Container(
+                      //             margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             width: MediaQuery.of(context).size.width,
+                      //             height: MediaQuery.of(context).size.height,
+                      //             decoration: BoxDecoration(
+                      //               borderRadius: BorderRadius.circular(30),
+                      //               border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //               image: DecorationImage(
+                      //                 fit: BoxFit.cover,
+                      //                 image: AssetImage('images/user_icon.png'),
+                      //               ),
+                      //             ),
+                      //           );
+                      //         }
+                      //       } else if (snapshot.hasError) {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: Text("Error"),
+                      //           ),
+                      //         );
+                      //       } else {
+                      //         return Container(
+                      //           margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //           width: MediaQuery.of(context).size.width,
+                      //           height: MediaQuery.of(context).size.height,
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             border: Border.all(color: Color(0xffCDAD5C), width: 2),
+                      //           ),
+                      //           child: Center(
+                      //             child: CircularProgressIndicator(),
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //   ),
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => FutureBuilder<Crsid>(
+                      //           future: crsidData,
+                      //           builder: (context, snapshot) {
+                      //             if (snapshot.hasData) {
+                      //               double latitude = double.parse(snapshot.data!.plcList[5].lat);
+                      //               double longitude = double.parse(snapshot.data!.plcList[5].lng);
+                      //               int plcId = (snapshot.data!.plcList[num].id);
+                      //               print(latitude);
+                      //               print(longitude);
+                      //               // 예시로 초기값 설정
+                      //               return mappage(latitude: latitude, longitude: longitude, plcId: plcId);
+                      //             } else if (snapshot.hasError) {
+                      //               return Text("Error");
+                      //             } else {
+                      //               return CircularProgressIndicator();
+                      //             }
+                      //           },
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ), //ink5
                     ],
                   ),
                 )
-              ),
-              flex: 5
+              )
           ),
           Flexible(
+              flex: 8,
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 width: MediaQuery.of(context).size.width,
@@ -324,10 +712,10 @@ class _coursepageState extends State<coursepage> {
                     ),
                   )
                 ),
-              ),
-              flex: 8
+              )
           ),
           Flexible(
+              flex: 6,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -358,8 +746,7 @@ class _coursepageState extends State<coursepage> {
                   },
                   separatorBuilder: (BuildContext context, int index) => const Divider(),
                 )
-              ),
-              flex: 6
+              )
           )
         ],
       ),
