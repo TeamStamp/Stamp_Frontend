@@ -134,10 +134,25 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         width: double.infinity,
                         height: double.infinity,
-                        margin: EdgeInsets.fromLTRB(7, 10, 10, 0),
-                        child: Image(
-                          image: AssetImage('images/user_icon.png'),
-                        ),
+                        margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: FutureBuilder<ReadUser>(
+                          future: readuser,
+                          builder: (context, snapshot){
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.imgUrl != null) {
+                                return Image.network(snapshot.data!.imgUrl!);
+                              } else {
+                                return Image(
+                                  image: AssetImage('images/user_icon.png'),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return CircularProgressIndicator();
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        )
                       ),
                     ),
                   ),
@@ -163,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                     if(snapshot.hasData){
                                       return Text(snapshot.data!.nickname!+' 님', style: TextStyle(fontSize: 20));
                                     }else{
-                                      return Text('');
+                                      return CircularProgressIndicator();
                                     }
                                   },
                                 )
@@ -177,8 +192,12 @@ class _HomePageState extends State<HomePage> {
                               child: FutureBuilder<ReadUser>(
                                   future: readuser,
                                   builder: (context, snapshot) {
-                                    return Text(snapshot.data!.stamp.toString()+' 개',
-                                        style: TextStyle(fontSize: 20));
+                                    if(snapshot.hasData){
+                                      return Text(snapshot.data!.stamp.toString()+' 개',
+                                          style: TextStyle(fontSize: 20));}
+                                    else{
+                                      return CircularProgressIndicator();
+                                    }
                                   }
                               ),
                             ),

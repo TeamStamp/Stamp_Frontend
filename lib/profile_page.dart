@@ -96,7 +96,7 @@ class _profilepage extends State<profilepage> {
                           child: Container(
                             width: double.infinity,
                             height: double.infinity,
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                             child: FutureBuilder<ReadUser>(
                               future: readuser,
                               builder: (context, snapshot){
