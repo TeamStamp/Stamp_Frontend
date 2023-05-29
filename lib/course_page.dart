@@ -4,6 +4,8 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:stamp_front/repository/crsid_repository.dart';
+import 'Models/Crsid.dart';
 import 'map_page.dart';
 import 'package:stamp_front/stamp_page.dart';
 import 'package:stamp_front/profile_page.dart';
@@ -362,9 +364,13 @@ class _coursepageState extends State<coursepage> {
         )
     );
   }
+  final crsidRepository = CrsidRepository();
+
+  late Future<Crsid> crsid;
 
   void initState() {
     super.initState();
+    crsid = crsidRepository.readCrsidInfo();
   }
 
   void dispose() {
