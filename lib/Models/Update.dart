@@ -1,7 +1,7 @@
 class Update {
-  final String email;
-  final String nickname;
-  final String password;
+  final String? email;
+  final String? nickname;
+  final String? password;
 
   Update({required this.email, required this.nickname, required this.password});
 
@@ -9,7 +9,7 @@ class Update {
     return Update(
       email: json['email'],
       nickname: json['nickname'],
-      password: json['password']
+      password: json['password'],
 
     );
   }

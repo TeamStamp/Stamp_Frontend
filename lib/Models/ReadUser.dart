@@ -2,10 +2,10 @@ import 'dart:ffi';
 import 'dart:convert';
 
 class ReadUser {
-  final String email;
-  final String nickname;
-  final int stamp;
-  final String imgUrl;
+  final String? email;
+  final String? nickname;
+  final int? stamp;
+  final String? imgUrl;
 
   ReadUser({required this.email, required this.nickname, required this.stamp, required this.imgUrl});
 

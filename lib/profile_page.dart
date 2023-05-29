@@ -100,13 +100,19 @@ class _profilepage extends State<profilepage> {
                             child: FutureBuilder<ReadUser>(
                               future: readuser,
                               builder: (context, snapshot){
-                                if(snapshot.hasData){
-                                  return Image.network(snapshot.data!.imgUrl);
-                                }else{
-                                  return IconButton(
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.imgUrl != null) {
+                                    return Image.network(snapshot.data!.imgUrl!);
+                                  } else {
+                                    return IconButton(
                                       icon: Icon(Icons.upload),
-                                      onPressed: handleUploadButton
-                                  );
+                                      onPressed: handleUploadButton,
+                                    );
+                                  }
+                                } else if (snapshot.hasError) {
+                                  return CircularProgressIndicator();
+                                } else {
+                                  return CircularProgressIndicator();
                                 }
                               },
                             )
@@ -133,7 +139,7 @@ class _profilepage extends State<profilepage> {
                                     future: readuser,
                                     builder: (context, snapshot){
                                       if(snapshot.hasData){
-                                        return Text(snapshot.data!.nickname+' 님', style: TextStyle(fontSize: 20));
+                                        return Text(snapshot.data!.nickname!+' 님', style: TextStyle(fontSize: 20));
                                       }else{
                                         return CircularProgressIndicator();
                                       }

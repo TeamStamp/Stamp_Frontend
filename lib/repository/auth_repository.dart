@@ -133,10 +133,8 @@ class AuthRepository {
           'Content-Type': 'application/json',
           'x-auth-token': await getToken()
         });
-    var data1 = (json.decode(utf8.decode(response.bodyBytes))['data']);
-    print(data1);
     if (response.statusCode == 200) {
-      return Update.fromJson(jsonDecode(response.body)['data']);
+      return Update.fromJson(json.decode(utf8.decode(response.bodyBytes))['data']);
     } else {
       throw Exception('Failed to load album');
     }
@@ -153,7 +151,7 @@ class AuthRepository {
                           "password": password
         }));
     if(response.statusCode == 200) {
-      return Update.fromJson(json.decode(response.body)['data']);
+      return Update.fromJson(json.decode(utf8.decode(response.bodyBytes))['data']);
     }else{
       throw Exception('실패');
     }
@@ -184,6 +182,8 @@ class AuthRepository {
           'Content-Type': 'application/json; charset=utf-8',
           'x-auth-token': await getToken()
         });
+    var data1 = json.decode(utf8.decode(response.bodyBytes))['data'];
+    print(data1);
     if(response.statusCode == 200) {
       return ReadUser.fromJson(json.decode(utf8.decode(response.bodyBytes))['data']);
     }else{
