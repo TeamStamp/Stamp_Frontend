@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:stamp_front/repository/map_repository.dart';
 import 'test.dart'; // test.dart 파일을 import합니다.
 
 class mappage extends StatefulWidget {
@@ -22,6 +23,7 @@ class MapSampleState extends State<mappage> {
   LocationData? _currentLocation;
   Location location = Location();
   bool showStamp = false;
+  final MapRepository mapRepository = MapRepository();
 
   @override
   void initState() {
@@ -157,14 +159,13 @@ class MapSampleState extends State<mappage> {
           SizedBox(height: 16),
           FloatingActionButton.extended(
             onPressed: () {
-              // Navigate to the test page when the button is pressed
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TestPage()),
-              );
+              int crsId=9;
+              int plcId=4;
+              bool visited=true;
+              updateServerData(crsId,plcId,visited);
             },
-            label: const Text('테스트 페이지로 이동'),
-            icon: Icon(Icons.navigate_next),
+            label: const Text('Update Server Data'),
+            icon: Icon(Icons.update),
             heroTag: null,
           ),
         ],
@@ -182,6 +183,17 @@ class MapSampleState extends State<mappage> {
         ),
       ),
     );
+  }
+  void updateServerData(int crsId, int plcId,bool visited) {
+    mapRepository.visitPic(crsId, plcId, visited)
+        .then((updatedData) {
+      // 서버에서 업데이트된 데이터 처리
+      print('Data updated: $updatedData');
+    })
+        .catchError((error) {
+      // 오류 처리
+      print('Error updating data: $error');
+    });
   }
 
   Future<void> _goToPosition(CameraPosition cameraPosition) async {
