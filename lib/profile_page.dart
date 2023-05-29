@@ -390,7 +390,7 @@ class _profilepage extends State<profilepage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return '값을 입력해주세요';
-                                    }else if(snapshot.data!.password != passwordController.text){
+                                    }else if(snapshot.data!.password!= passwordController.text){
                                       return '비밀번호가 맞지 않습니다';
                                     }else{
                                       return null;
