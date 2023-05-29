@@ -151,12 +151,27 @@ class _coursepageState extends State<coursepage> {
                           ),
                         ),
                         onTap: () {
-                          double latitude = 37.275760;
-                          double longitude = 127.132564;
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => mappage(latitude: latitude, longitude: longitude),
-                            )
+                            MaterialPageRoute(
+                              builder: (context) => FutureBuilder<Crsid>(
+                                future: crsidData,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    double latitude = double.parse(snapshot.data!.plcList[0].lat);
+                                    double longitude = double.parse(snapshot.data!.plcList[0].lng);
+                                    print(latitude);
+                                    print(longitude);
+                                    // 예시로 초기값 설정
+                                    return mappage(latitude: latitude, longitude: longitude);
+                                  } else if (snapshot.hasError) {
+                                    return Text("Error");
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -366,11 +381,11 @@ class _coursepageState extends State<coursepage> {
   }
   final crsidRepository = CrsidRepository();
 
-  late Future<Crsid> crsid;
+  late Future<Crsid> crsidData;
 
   void initState() {
     super.initState();
-    crsid = crsidRepository.readCrsidInfo();
+    crsidData = crsidRepository.readCrsidInfo();
   }
 
   void dispose() {
