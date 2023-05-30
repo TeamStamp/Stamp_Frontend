@@ -206,40 +206,47 @@ class _ListViewPageState extends State<ListViewPage> {
                                             height: 60,
                                             child: Column(
                                               children: [
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: Padding(
-                                                            padding: EdgeInsets.only(
-                                                                left: 20),
-                                                            child: Text('$num1 등'))),
-                                                    const SizedBox(
-                                                      height: 60,
-                                                      child: VerticalDivider(
-                                                        color: Color(0xffCDAD5C),
-                                                        thickness: 2,
+                                                Column(
+                                                  children: [Row(
+                                                    children: [
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: Padding(
+                                                              padding: EdgeInsets.only(
+                                                                  left: 20),
+                                                              child: Text('$num1 등'))),
+                                                      const SizedBox(
+                                                        height: 60,
+                                                        child: VerticalDivider(
+                                                          color: Color(0xffCDAD5C),
+                                                          thickness: 2,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Expanded(
-                                                        flex: 4,
-                                                        child: Padding(
-                                                        padding: EdgeInsets.only(left: 10),
-                                                        child: Text('${snapshot.data![num].nickName}'))),
-                                                    const SizedBox(
-                                                      height: 60,
-                                                      child: VerticalDivider(
-                                                        color: Color(0xffCDAD5C),
-                                                        thickness: 2,
+                                                      Expanded(
+                                                          flex: 4,
+                                                          child: Padding(
+                                                          padding: EdgeInsets.only(left: 10),
+                                                          child: Text('${snapshot.data![num].nickName}'))),
+                                                      const SizedBox(
+                                                        height: 60,
+                                                        child: VerticalDivider(
+                                                          color: Color(0xffCDAD5C),
+                                                          thickness: 2,
+                                                        ),
                                                       ),
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: Padding(
+                                                          padding: EdgeInsets.only(left: 10),
+                                                          child: Text('${snapshot.data![num].stamp} 개'))),
+                                                    ],
+                                                  ),
+                                                    const Divider(
+                                                      color: Color(0xffCDAD5C),
+                                                      thickness: 2,
+                                                      height: 0,
                                                     ),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: Padding(
-                                                        padding: EdgeInsets.only(left: 10),
-                                                        child: Text('${snapshot.data![num].stamp} 개'))),
-                                                  ],
-                                                ),
+                                                ]),
 
                                               ],
                                             )
