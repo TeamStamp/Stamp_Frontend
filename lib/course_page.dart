@@ -441,5 +441,17 @@ class _coursepageState extends State<coursepage> {
         )
     );
   }
+  final crsidRepository = CrsidRepository();
+
+  late Future<Crsid> crsid;
+
+  void initState() {
+    super.initState();
+    crsid = crsidRepository.readCrsidInfo();
+  }
+
+  void dispose() {
+    super.dispose();
+  }
 
 }
