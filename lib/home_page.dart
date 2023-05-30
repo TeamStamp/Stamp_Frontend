@@ -26,13 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var imageList = [
-    'images/place1.jpg',
-    'images/place2.jpg',
-    'images/place3.jpg',
-    'images/place4.jpg',
-    'images/place5.jpg'
-  ];
 
   final authRepository = AuthRepository();
   final courseRepository = CourseRepository();
@@ -40,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   late Future<ReadUser> readuser;
   late Future<Update> fetchAlbum;
   late Future<List<Course>> course;
+
 
   @override
   void initState() {
@@ -132,27 +126,27 @@ class _HomePageState extends State<HomePage> {
                           border: Border.all(color: Color(0xffC5C2B3))),
                       margin: EdgeInsets.fromLTRB(60, 25, 0, 25),
                       child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: FutureBuilder<ReadUser>(
-                          future: readuser,
-                          builder: (context, snapshot){
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.imgUrl != null) {
-                                return Image.network(snapshot.data!.imgUrl!);
+                          width: double.infinity,
+                          height: double.infinity,
+                          margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                          child: FutureBuilder<ReadUser>(
+                            future: readuser,
+                            builder: (context, snapshot){
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.imgUrl != null) {
+                                  return Image.network(snapshot.data!.imgUrl!);
+                                } else {
+                                  return Image(
+                                    image: AssetImage('images/user_icon.png'),
+                                  );
+                                }
+                              } else if (snapshot.hasError) {
+                                return CircularProgressIndicator();
                               } else {
-                                return Image(
-                                  image: AssetImage('images/user_icon.png'),
-                                );
+                                return CircularProgressIndicator();
                               }
-                            } else if (snapshot.hasError) {
-                              return CircularProgressIndicator();
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
-                        )
+                            },
+                          )
                       ),
                     ),
                   ),
@@ -169,9 +163,9 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Flexible(
                             child: Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              alignment: Alignment.center,
+                                width: double.infinity,
+                                height: double.infinity,
+                                alignment: Alignment.center,
                                 child: FutureBuilder<ReadUser>(
                                   future: readuser,
                                   builder: (context, snapshot){
@@ -226,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(  builder: (context) => coursepage()),
+                      MaterialPageRoute(builder: (context) => coursepage()),
                     );
                   },
                   child: Card(
@@ -236,8 +230,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Flexible(
                             child: Container(
-                              width: MediaQuery.of(context).size.width*0.8,
-                              height: MediaQuery.of(context).size.height*0.8,
+                                width: MediaQuery.of(context).size.width*0.8,
+                                height: MediaQuery.of(context).size.height*0.8,
                                 child: FutureBuilder<List<Course>>(
                                   future: course,
                                   builder: (context, snapshot) {

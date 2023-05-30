@@ -8,6 +8,7 @@ import '../Models/Crsid.dart';
 import '../Models/Place.dart';
 
 class CrsidRepository {
+
   Future<Crsid> readCrsidInfo() async {
     var url = Uri.http('54.215.135.43:8080', 'api/cv/9');
     Response response = await http.get(url,
