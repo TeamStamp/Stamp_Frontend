@@ -11,6 +11,9 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:stamp_front/repository/Rank_repository.dart';
+
+import 'Models/Rank.dart';
 
 class stamppage extends StatelessWidget {
   const stamppage({Key? key}) : super(key: key);
@@ -39,121 +42,147 @@ class _ListViewPageState extends State<ListViewPage> {
     '김현우',
     '김의정'
   ];
+  final rankRepository = RankRepository();
+
+  late Future<List<Rank>> rank;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    rank = rankRepository.Rank_List();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-          children: [
-            Flexible(         //타이틀 Container, Flex 1
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  alignment: Alignment.center,
-                  child: Text('Ranking',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87)
-                  ),
-                ),
-              ),
-            ),
-
-
-            Flexible(         //1등 2등 3등 Container, Flex 3
-              flex: 4,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                alignment: Alignment.center,
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        child: Image(
-                          image: AssetImage('images/Ranking.png'),
+        body: FutureBuilder(
+          future: rank,
+          builder: (context, snapshot) {
+            if(snapshot.hasData){
+              return Column(
+                children: [
+                  Flexible(         //타이틀 Container, Flex 1
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        alignment: Alignment.center,
+                        child: Text('Ranking',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87)
                         ),
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ),
+
+
+                  Flexible(         //1등 2등 3등 Container, Flex 3
+                    flex: 4,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: Stack(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 21, right: 30),
-                                child: Container(
-                                  child: Text('2등 이름',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black54),
-                                  ),
+                              Container(
+                                child: Image(
+                                  image: AssetImage('images/Ranking.png'),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
+                              Positioned(
+                                left: 0,
+                                right: 0,
                                 child: Container(
-                                  child: Text('1등 이름',
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 21, right: 30),
+                                          child: Container(
+                                            child: Text('${snapshot.data![1].email!}',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black54),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: 12),
+                                          child: Container(
+                                            child: Text(''+snapshot.data![0].email!,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black54),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 21, left:30),
+                                          child: Container(
+                                            child: Text('${snapshot.data![2].email!}',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black54),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
+
+
+                  Flexible(         //4등~ ListView Container, Flex 3
+                    flex: 4,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      alignment: Alignment.center,
+                      child: ListView.separated(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          if(snapshot.hasData){
+                            var num =3;
+                            return Container(
+                                padding: const EdgeInsets.all(5),
+                                child: Text(
+                                    snapshot.data![num].email!,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black54),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 21, left:30),
-                                child: Container(
-                                  child: Text('3등 이름',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black54),
-                                      ),
-                                ),
-                              ),
-                            ],
-                          )
+                                    textAlign: TextAlign.center)
+                            );
+                          }
+                          else{
+                            return CircularProgressIndicator();
+                          }
+                        },
+                        separatorBuilder: (context, index) => const Divider(
+                          height: 8,
+                          color: Colors.black26,
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                )
-              ),
-            ),
-
-
-            Flexible(         //4등~ ListView Container, Flex 3
-              flex: 4,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                alignment: Alignment.center,
-                child: ListView.separated(
-                  itemCount: nameList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                        padding: const EdgeInsets.all(5),
-                        child: Text(
-                            nameList[index],
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black54),
-                            textAlign: TextAlign.center)
-                    );
-                  },
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 8,
-                    color: Colors.black26,
-                  ),
-                ),
-              ),
-            ),
-          ],
+                ],
+              );
+            }else{
+              return CircularProgressIndicator();
+            }
+          }
         )
     );
   }

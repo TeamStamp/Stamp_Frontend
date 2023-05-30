@@ -246,23 +246,35 @@ class _profilepage extends State<profilepage> {
                                           int index) {
                                         return SizedBox(
                                           height: 60,
-                                          child: Row(
+                                          child: Column(
                                             children: [
-                                              Expanded(
-                                                  flex: 3,
-                                                  child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 15),
-                                                      child: Text('${snapshot.data![index].crsName}'))),
-                                              const VerticalDivider(
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      flex: 3,
+                                                      child: Padding(
+                                                          padding: EdgeInsets.only(
+                                                              left: 15),
+                                                          child: Text('${snapshot.data![index].crsName}'))),
+                                                  const SizedBox(
+                                                    height: 60,
+                                                    child: VerticalDivider(
+                                                      color: Color(0xffCDAD5C),
+                                                      thickness: 2,
+                                                    ),
+                                                  ),
+                                                  Expanded(child: Padding(
+                                                      padding: EdgeInsets.only(left: 10),
+                                                      child: Text('${snapshot.data![index].stamp} 개'))),
+                                                ],
+                                              ),
+                                              const Divider(
                                                 color: Color(0xffCDAD5C),
                                                 thickness: 2,
+                                                height: 0,
                                               ),
-                                              Expanded(child: Padding(
-                                                padding: EdgeInsets.only(left: 10),
-                                                  child: Text('${snapshot.data![index].stamp} 개'))),
                                             ],
-                                          ),
+                                          )
                                         );
                                       },
                                       separatorBuilder: (BuildContext context,
@@ -390,8 +402,6 @@ class _profilepage extends State<profilepage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return '값을 입력해주세요';
-                                    }else if(snapshot.data!.password!= passwordController.text){
-                                      return '비밀번호가 맞지 않습니다';
                                     }else{
                                       return null;
                                     }
