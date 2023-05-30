@@ -198,7 +198,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                     var num=3;
                                     return ListView.separated(
                                       shrinkWrap: true,
-                                      itemCount: snapshot.data!.length,
+                                      itemCount: snapshot.data!.length-3,
                                       itemBuilder: (BuildContext context,
                                           int index) {
                                         var num1 = 4 + index;
