@@ -105,7 +105,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                         Padding(
                                           padding: const EdgeInsets.only(top: 21, right: 30),
                                           child: Container(
-                                            child: Text('${snapshot.data![1].email!}',
+                                            child: Text('${snapshot.data![1].nickName!}',
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.black54),
@@ -115,7 +115,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                         Padding(
                                           padding: const EdgeInsets.only(bottom: 12),
                                           child: Container(
-                                            child: Text(''+snapshot.data![0].email!,
+                                            child: Text(''+snapshot.data![0].nickName!,
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -126,7 +126,7 @@ class _ListViewPageState extends State<ListViewPage> {
                                         Padding(
                                           padding: const EdgeInsets.only(top: 21, left:30),
                                           child: Container(
-                                            child: Text('${snapshot.data![2].email!}',
+                                            child: Text('${snapshot.data![2].nickName!}',
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.black54),
@@ -144,38 +144,125 @@ class _ListViewPageState extends State<ListViewPage> {
                   ),
 
 
-                  Flexible(         //4등~ ListView Container, Flex 3
-                    flex: 4,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      alignment: Alignment.center,
-                      child: ListView.separated(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          if(snapshot.hasData){
-                            var num =3;
-                            return Container(
-                                padding: const EdgeInsets.all(5),
-                                child: Text(
-                                    snapshot.data![num].email!,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black54),
-                                    textAlign: TextAlign.center)
-                            );
-                          }
-                          else{
-                            return CircularProgressIndicator();
-                          }
-                        },
-                        separatorBuilder: (context, index) => const Divider(
-                          height: 8,
-                          color: Colors.black26,
+                  Flexible(
+                    flex: 5,
+                      child: Container(
+                        height: 400,
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border:
+                            Border.all(color: Color(0xffCDAD5C), width: 2)),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              child: Row(
+                                children: const [
+                                  Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Text('등수'))),
+                                  VerticalDivider(
+                                    color: Color(0xffCDAD5C),
+                                    thickness: 2,
+                                  ),
+                                  Expanded(
+                                      flex: 4,
+                                      child: Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text('닉네임'))),
+                                  VerticalDivider(
+                                    color: Color(0xffCDAD5C),
+                                    thickness: 2,
+                                  ),
+                                  Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text('총 개수'))),
+                                ],
+                              ),
+                            ),
+                            const Divider(
+                              color: Color(0xffCDAD5C),
+                              thickness: 2,
+                              height: 0,
+                            ),
+                            Expanded(
+                              child: FutureBuilder<List<Rank>>(
+                                future: rank,
+                                builder: (context, snapshot) {
+                                  if(snapshot.hasData) {
+                                    var num=3;
+                                    return ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index) {
+                                        var num1 = 4 + index;
+                                        return SizedBox(
+                                            height: 60,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                        flex: 2,
+                                                        child: Padding(
+                                                            padding: EdgeInsets.only(
+                                                                left: 20),
+                                                            child: Text('$num1 등'))),
+                                                    const SizedBox(
+                                                      height: 60,
+                                                      child: VerticalDivider(
+                                                        color: Color(0xffCDAD5C),
+                                                        thickness: 2,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 4,
+                                                        child: Padding(
+                                                        padding: EdgeInsets.only(left: 10),
+                                                        child: Text('${snapshot.data![num].nickName}'))),
+                                                    const SizedBox(
+                                                      height: 60,
+                                                      child: VerticalDivider(
+                                                        color: Color(0xffCDAD5C),
+                                                        thickness: 2,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 2,
+                                                        child: Padding(
+                                                        padding: EdgeInsets.only(left: 10),
+                                                        child: Text('${snapshot.data![num].stamp} 개'))),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            )
+                                        );
+                                      },
+                                      separatorBuilder: (BuildContext context,
+                                          int index) =>
+                                      const Divider(
+                                        color: Color(0xffCDAD5C),
+                                        thickness: 2,
+                                        height: 0,
+                                      ),
+                                    );
+                                  }else if(snapshot.hasError){
+                                    return Text('error');
+                                  }else{
+                                    return CircularProgressIndicator();
+                                  }
+                                }
+                          ),
+                            ),]
                         ),
-                      ),
-                    ),
+                      )
                   ),
                 ],
               );

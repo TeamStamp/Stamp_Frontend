@@ -402,7 +402,7 @@ class _profilepage extends State<profilepage> {
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return '값을 입력해주세요';
-                                    }else{
+                                    } else{
                                       return null;
                                     }
                                   },

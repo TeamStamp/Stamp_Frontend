@@ -1,14 +1,14 @@
 import 'dart:ffi';
 
 class Rank {
-  final String? email;
+  final String? nickName;
   final int? stamp;
 
-  Rank({required this.email, required this.stamp});
+  Rank({required this.nickName, required this.stamp});
 
   factory Rank.fromJson(Map<String, dynamic> json) {
     return Rank(
-      email: json['email'] as String,
+      nickName: json['nickName'] as String,
       stamp: json['stamp'] as int,
     );
   }
