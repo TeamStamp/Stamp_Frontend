@@ -75,26 +75,48 @@ class MapSampleState extends State<mappage> {
       },
     );
   }
+  Future<void> _showError() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('경양카츠와의 거리가 100m 이내여야 합니다!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     CameraPosition initialCameraPosition = CameraPosition(
-      target: LatLng(widget.latitude, widget.longitude),
-      zoom: 17,
+      target: LatLng(37.32138, 127.10955),
+      zoom: 22,
+    );
+    CameraPosition markCameraPosition = CameraPosition(
+      target: LatLng(37.32166, 127.11015),
+      zoom: 18,
     );
 
     CameraPosition currentCameraPosition = _currentLocation != null
         ? CameraPosition(
       target: LatLng(
           _currentLocation!.latitude!, _currentLocation!.longitude!),
-      zoom: 17,
+      zoom: 20,
     )
         : initialCameraPosition;
 
     double distance = _currentLocation != null
         ? Geolocator.distanceBetween(
-      widget.latitude,
-      widget.longitude,
+      37.32138,
+      127.10955,
       _currentLocation!.latitude!,
       _currentLocation!.longitude!,
     )
@@ -105,11 +127,18 @@ class MapSampleState extends State<mappage> {
         children: [
           GoogleMap(
             mapType: MapType.normal,
-            initialCameraPosition: initialCameraPosition,
+            initialCameraPosition: markCameraPosition,
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
-            myLocationEnabled: true, // Show the current location button on the map
+            myLocationEnabled: true,
+            markers: Set<Marker>.from([
+              Marker(
+                markerId: MarkerId('경양카츠'),
+                position: LatLng(37.32138,127.10955),
+                icon: BitmapDescriptor.defaultMarker, // You can customize the marker icon if needed
+              ),
+            ]), // Show the current location button on the map
           ),
         ],
       ),
@@ -121,7 +150,7 @@ class MapSampleState extends State<mappage> {
             onPressed: () {
               _goToPosition(initialCameraPosition);
             },
-            label: const Text('초기 위치'),
+            label: const Text('경양카츠'),
             icon: Icon(Icons.location_on),
             backgroundColor: Color(0xFFF6BC53),
             foregroundColor: Colors.black,
@@ -133,18 +162,21 @@ class MapSampleState extends State<mappage> {
               // Check if the distance is less than 100 meters
               if (_currentLocation != null &&
                   Geolocator.distanceBetween(
-                      widget.latitude,
-                      widget.longitude,
+                      37.32138,
+                      127.10950,
                       _currentLocation!.latitude!,
                       _currentLocation!.longitude!) <
-                      10000) {
+                      100) {
                 _showConfirmationDialog();
                 int crsId=9;
                 bool visited=true;
                 updateServerData(crsId,widget.plcId,visited);
               }
+              else{
+                _showError();
+              }
             },
-            label: const Text('Update Server Data'),
+            label: const Text('도장 깨기'),
             icon: Icon(Icons.update),
             backgroundColor: Color(0xFFF6BC53),
             foregroundColor: Colors.black,

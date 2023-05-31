@@ -160,7 +160,6 @@ class _coursepageState extends State<coursepage> {
                     .height,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-
                         fit: BoxFit.cover,
                         image: AssetImage('images/course_page.image01.png')
                     )

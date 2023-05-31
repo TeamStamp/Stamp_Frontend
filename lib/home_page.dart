@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Update> fetchAlbum;
   late Future<List<Course>> course;
 
+  bool _shouldUpdateProfile = false;
 
   @override
   void initState() {
@@ -214,8 +215,9 @@ class _HomePageState extends State<HomePage> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemCount: 5,
+              itemCount: 6,
               itemBuilder: (context, index) {
+                final reversedIndex = 5 - index;
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -237,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       final courses = snapshot.data;
-                                      final course = courses![index];
+                                      final course = courses![reversedIndex];
                                       if (course.imgUrl != null && course.imgUrl.isNotEmpty) {
                                         return Image.network(
                                           course.imgUrl!,
@@ -261,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                                 future: course,
                                 builder: (context, snapshot){
                                   if(snapshot.hasData){
-                                    return Text(snapshot.data![index].crsName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54), textAlign: TextAlign.center,);
+                                    return Text(snapshot.data![reversedIndex].crsName, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54), textAlign: TextAlign.center,);
                                   }
                                   else if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
